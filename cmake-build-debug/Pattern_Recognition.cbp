@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Pattern_Recognition"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="OpenMP">
+				<Option output="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/OpenMP" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA"/>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 OpenMP"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="OpenMP/fast">
+				<Option output="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/OpenMP" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA"/>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 OpenMP/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CUDA">
+				<Option output="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CUDA" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA"/>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 CUDA"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CUDA/fast">
+				<Option output="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CUDA" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA"/>
+					<Add directory="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 CUDA/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA/execution.cuh">
+			<Option target="CUDA"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA/main.cu">
+			<Option target="CUDA"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/main.cpp">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/parallel.cpp">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/parallel.h">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/sequential.cpp">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/sequential.h">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/utilities.cpp">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_OMP/utilities.h">
+			<Option target="OpenMP"/>
+		</Unit>
+		<Unit filename="/home/nicco/Documents/Progetti/Pattern_Recognition/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

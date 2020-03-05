@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA/execution.cuh
+iostream
+-
+vector
+-
+cuda_runtime_api.h
+-
+cuda_runtime.h
+-
+cuda.h
+-
+
+/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA/main.cu
+iostream
+-
+chrono
+-
+cuda.h
+-
+cuda_runtime_api.h
+-
+curand.h
+-
+sstream
+-
+execution.cuh
+/home/nicco/Documents/Progetti/Pattern_Recognition/PattRec_CUDA/execution.cuh
+
