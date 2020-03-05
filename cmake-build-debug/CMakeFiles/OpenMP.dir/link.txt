@@ -1,1 +1,0 @@
-/usr/bin/c++   -fopenmp  -g   CMakeFiles/OpenMP.dir/PattRec_OMP/main.cpp.o CMakeFiles/OpenMP.dir/PattRec_OMP/parallel.cpp.o CMakeFiles/OpenMP.dir/PattRec_OMP/sequential.cpp.o CMakeFiles/OpenMP.dir/PattRec_OMP/utilities.cpp.o  -o OpenMP 

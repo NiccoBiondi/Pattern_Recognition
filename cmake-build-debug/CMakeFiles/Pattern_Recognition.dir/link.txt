@@ -1,1 +1,0 @@
-/usr/bin/g++ -fopenmp CMakeFiles/Pattern_Recognition.dir/PattRec_CUDA/main.cu.o -o Pattern_Recognition  -L"/usr/local/cuda/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda/targets/x86_64-linux/lib" -lcudadevrt -lcudart_static -lrt -lpthread -ldl

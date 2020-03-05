@@ -1,4 +1,0 @@
-/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CMakeFiles/OpenMP.dir
-/home/nicco/Documents/Progetti/Pattern_Recognition/cmake-build-debug/CMakeFiles/CUDA.dir
