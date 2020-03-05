@@ -59,10 +59,11 @@ __global__ void dot_prod(const int *a, const int *b, int *c) {
 }
 
 __global__ void
-computeSAD_n(float *data, float *queries, float *result, int LEN_RESULT, int LEN_PATTERN_SEQ,
-             int NUM_QUERIES, float *minSad, int *minSadId) {
+computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int LEN_PATTERN_SEQ,
+                 int NUM_QUERIES, float *minSad, int *minSadId) {
     /**
-     * Compute result array reading both queries and data from global memory (aka naive implementation)
+     * Compute result array reading both queries and data from global memory ?with less mem access? CHECK ME
+     * (aka naive implementation)
      **/
 
     int index = threadIdx.x + blockIdx.x * blockDim.x;
@@ -97,8 +98,34 @@ computeSAD_n(float *data, float *queries, float *result, int LEN_RESULT, int LEN
 }
 
 __global__ void
-computeSAD_t(const float *data, const float *queries, float *result, int LEN_RESULT,
-             int LEN_PATTERN_SEQ, int NUM_QUERIES, float *minSad, int *minSadId) {
+computeSAD_priv(float *data, float *queries, float *result, int LEN_RESULT, int LEN_PATTERN_SEQ,
+                int NUM_QUERIES, float *minSad, int *minSadId) {
+
+    /**
+     * Compute result array reading both queries and data from global memory with privatization
+     * (aka tmpMin implementation)
+     **/
+
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    int LEN_SEQ = LEN_PATTERN_SEQ + LEN_RESULT - 1;
+    float t_min;
+
+    for (int q = 0; q < NUM_QUERIES; q++) {
+        t_min = 0;
+        if ((index + LEN_PATTERN_SEQ - 1 < LEN_SEQ) && (threadIdx.x < LEN_RESULT)) {
+            for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
+                t_min += abs(data[index + i] - queries[i + q * LEN_PATTERN_SEQ]);
+            }
+            __syncthreads();
+            result[index + q * LEN_RESULT] = t_min;
+        }
+    }
+}
+
+
+__global__ void
+computeSAD_tiling(const float *data, const float *queries, float *result, int LEN_RESULT,
+                  int LEN_PATTERN_SEQ, int NUM_QUERIES, float *minSad, int *minSadId) {
 
     /**
      * Compute result array reading data and query from shared mem (aka tiling implementation)
@@ -109,8 +136,33 @@ computeSAD_t(const float *data, const float *queries, float *result, int LEN_RES
 
     int LEN_SEQ = LEN_PATTERN_SEQ + LEN_RESULT - 1;
     int index = threadIdx.x + blockIdx.x * TILE_WIDTH;
+    float tmp_sad;
     //printf("\n%d, %d, %d", threadIdx.x, blockIdx.x, index);
 
+    for (int q = 0; q < NUM_QUERIES; q++) {
+        for (int p = 0; p < (LEN_SEQ - 1) / TILE_WIDTH + 1; ++p) {
+            if (p * TILE_WIDTH + threadIdx.x < LEN_RESULT) {
+                for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
+                    // we also load with it its next values
+                    data_sh[threadIdx.x + i] = data[p * TILE_WIDTH + threadIdx.x + i];
+                    query_sh[i] = queries[i + q * LEN_RESULT];
+                }
+            } else { data_sh[threadIdx.x] = 0.0; }
+            __syncthreads();
+            if (index < LEN_RESULT) {
+                for (int i = 0; i < TILE_WIDTH; ++i) {
+                    tmp_sad += abs(data_sh[i] - query_sh[i + q * LEN_PATTERN_SEQ]);
+                }
+            }
+            __syncthreads();
+            if (index < LEN_RESULT) {
+                result[index + q * LEN_RESULT] = tmp_sad;
+            }
+        }
+    }
+
+
+    /*
     for (int q = 0; q < NUM_QUERIES; q++) {
         for (int i = 0; i < LEN_SEQ / TILE_WIDTH; i++) {
             // check if in tile can enter all the sequence for compute SAD
@@ -120,18 +172,17 @@ computeSAD_t(const float *data, const float *queries, float *result, int LEN_RES
                     query_sh[threadIdx.x + j + i * TILE_WIDTH + q * LEN_PATTERN_SEQ] = queries[threadIdx.x +
                                                                                                q * LEN_PATTERN_SEQ + j +
                                                                                                i * TILE_WIDTH];
+                    printf("\ndata %f", data_sh[threadIdx.x + j + i * TILE_WIDTH]);
                 }
             }
             // Barrier for threads in a block
             __syncthreads();
-        }
-
-        if (threadIdx.x < LEN_RESULT) {
-            for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
-                result[index + q * LEN_RESULT] += abs(data_sh[i] - query_sh[i + q * LEN_PATTERN_SEQ]);
+            for (int t = 0; t < TILE_WIDTH; t++) {
+                tmp += abs(data_sh[t] - query_sh[t + q * LEN_PATTERN_SEQ]);
             }
+            result[index + q * LEN_RESULT] = tmp;
         }
-    }
+    }*/
 
     /*float tmp_sad = 0;
 

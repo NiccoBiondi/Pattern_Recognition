@@ -17,9 +17,9 @@
 
 int main(int argc, char **argv) {
 
-#ifdef __CUDACC__
+    #ifdef __CUDACC__
     std::cout << "cuda defined" << std::endl;
-#endif
+    #endif
 
     std::cout << "Welcome to Pattern Recognition" << std::endl;
 
@@ -122,8 +122,8 @@ int main(int argc, char **argv) {
     }
 
     auto start = std::chrono::high_resolution_clock::now();
-    computeSAD_t<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
-                                        NUM_QUERIES, dev_minSad, dev_minSadId);
+    computeSAD_tiling<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+                                           NUM_QUERIES, dev_minSad, dev_minSadId);
     auto end = std::chrono::high_resolution_clock::now();
     float total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     if (verbose != 0) {
         cudaMemcpy(result, result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float), cudaMemcpyDeviceToHost);
         for (int r = 0; r < NUM_QUERIES * LEN_RESULT; r++) {
-            if (r % LEN_RESULT == 0) std::cout << "result " << r / LEN_RESULT << ": [";
+            if (r % LEN_RESULT == 0) std::cout << "\nresult " << r / LEN_RESULT << ": [";
             std::cout << " " << result[r] << " ";
             if (r % LEN_RESULT == (LEN_RESULT - 1)) std::cout << "]" << std::endl;
         }
