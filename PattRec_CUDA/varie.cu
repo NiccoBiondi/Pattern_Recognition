@@ -139,3 +139,40 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+
+__global__ void hellGPU(int LEN_SEQ, int LEN_PATTERN_SEQ) {
+
+    int my_pos = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (blockIdx.x % 2) {
+        printf("\n %d %d %d %d", LEN_SEQ, blockIdx.x, blockDim.x, threadIdx.x);
+    } else if (blockIdx.x % 3) {
+        printf("\n qua qua si fa qua qua ");
+    }
+
+    // some threads of the blocks will be not used check for them...
+}
+
+
+__global__ void add(const int *a, const int *b, int *c) {
+
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    c[index] = a[index] + b[index];
+}
+
+__global__ void dot_prod(const int *a, const int *b, int *c) {
+    __shared__ int temp[THREADS_PER_BLOCK];
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    temp[threadIdx.x] = a[index] * b[index];
+
+    __syncthreads();
+
+    if (0 == threadIdx.x) {
+        int sum = 0;
+        for (int i = 0; i < THREADS_PER_BLOCK; i++) {
+            sum += temp[i];
+        }
+        atomicAdd(c, sum);
+    }
+}

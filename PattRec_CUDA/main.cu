@@ -9,7 +9,7 @@
 #include <curand.h>
 #include <sstream>
 
-#define TILE_WIDTH 16
+#define TILE_WIDTH 128
 #define THREADS_PER_BLOCK TILE_WIDTH
 #define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }
 
@@ -17,18 +17,18 @@
 
 int main(int argc, char **argv) {
 
-    #ifdef __CUDACC__
+#ifdef __CUDACC__
     std::cout << "cuda defined" << std::endl;
-    #endif
+#endif
 
     std::cout << "Welcome to Pattern Recognition" << std::endl;
 
     // default hyper-parameters
-    int LEN_SEQ = 25;
-    int LEN_PATTERN_SEQ = 20;
-    int NUM_QUERIES = 2;
-    int verbose = 1;
-    std::string type = "n";
+    int LEN_SEQ = 10000000;
+    int LEN_PATTERN_SEQ = 300;
+    int NUM_QUERIES = 50;
+    int verbose = 0;
+    std::string type = "a";
     std::string mode = "naive";
 
     // set other hyper-parameters with launch arguments
@@ -51,7 +51,6 @@ int main(int argc, char **argv) {
         parser4 >> verbose;
 
         type = argv[5];
-        if (type != "n" and type != "BOH") mode = "both parallel and sequential";
 
         if (LEN_SEQ < LEN_PATTERN_SEQ) {
             std::cout << "len of historical data less than len pattern seq!! Try again! " << std::endl;
@@ -104,7 +103,7 @@ int main(int argc, char **argv) {
     curandGenerateUniform(generator, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ);
 
     // the generator create data on device, if verbose != 0 you'll copy data on host for visualization
-    if (verbose != 0) {
+    if (verbose > 1) {
         cudaMemcpy(data, data_ptr, LEN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
         cudaMemcpy(queries, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
 
@@ -121,29 +120,99 @@ int main(int argc, char **argv) {
         }
     }
 
+    float total_computational_time = 0.0;
+
     /** Computing SAD on GPU **/
-    auto start = std::chrono::high_resolution_clock::now();
-    computeSAD_priv<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
-                                           NUM_QUERIES, dev_minSad, dev_minSadId);
-    auto end = std::chrono::high_resolution_clock::now();
-    float total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    if (type == "n" or type == "a") {
+        mode = "naive";
+        auto start = std::chrono::high_resolution_clock::now();
+        computeSAD_naive<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+                                                NUM_QUERIES, dev_minSad, dev_minSadId);
+        auto end = std::chrono::high_resolution_clock::now();
+        total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-    cudaMemcpy(minSad, dev_minSad, NUM_QUERIES * sizeof(float), cudaMemcpyDeviceToHost);
-    cudaMemcpy(minSadId, dev_minSadId, NUM_QUERIES * sizeof(int), cudaMemcpyDeviceToHost);
+        cudaMemcpy(minSad, dev_minSad, NUM_QUERIES * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(minSadId, dev_minSadId, NUM_QUERIES * sizeof(int), cudaMemcpyDeviceToHost);
 
-    if (verbose != 0) {
-        cudaMemcpy(result, result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float), cudaMemcpyDeviceToHost);
-        for (int r = 0; r < NUM_QUERIES * LEN_RESULT; r++) {
-            if (r % LEN_RESULT == 0) std::cout << "\nresult " << r / LEN_RESULT << ": [";
-            std::cout << " " << result[r] << " ";
-            if (r % LEN_RESULT == (LEN_RESULT - 1)) std::cout << "]" << std::endl;
+        if (verbose > 1) {
+            cudaMemcpy(result, result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float), cudaMemcpyDeviceToHost);
+            for (int r = 0; r < NUM_QUERIES * LEN_RESULT; r++) {
+                if (r % LEN_RESULT == 0) std::cout << "\nresult " << r / LEN_RESULT << ": [";
+                std::cout << " " << result[r] << " ";
+                if (r % LEN_RESULT == (LEN_RESULT - 1)) std::cout << "]" << std::endl;
+            }
+        }
+
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+                  << std::endl;
+        if (verbose == 1) {
+            for (int s = 0; s < NUM_QUERIES; s++) {
+                std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
+                          << std::endl;
+            }
         }
     }
 
-    std::cout << "\nTotal computational time: " << total_computational_time << " ms" << std::endl;
-    for (int s = 0; s < NUM_QUERIES; s++) {
-        std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s] << std::endl;
+    if (type == "p" or type == "a") {
+        mode = "private";
+        auto start = std::chrono::high_resolution_clock::now();
+        computeSAD_priv<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+                                               NUM_QUERIES, dev_minSad, dev_minSadId);
+        auto end = std::chrono::high_resolution_clock::now();
+        total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+        cudaMemcpy(minSad, dev_minSad, NUM_QUERIES * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(minSadId, dev_minSadId, NUM_QUERIES * sizeof(int), cudaMemcpyDeviceToHost);
+
+        if (verbose > 1) {
+            cudaMemcpy(result, result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float), cudaMemcpyDeviceToHost);
+            for (int r = 0; r < NUM_QUERIES * LEN_RESULT; r++) {
+                if (r % LEN_RESULT == 0) std::cout << "\nresult " << r / LEN_RESULT << ": [";
+                std::cout << " " << result[r] << " ";
+                if (r % LEN_RESULT == (LEN_RESULT - 1)) std::cout << "]" << std::endl;
+            }
+        }
+
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+                  << std::endl;
+        if (verbose == 1) {
+            for (int s = 0; s < NUM_QUERIES; s++) {
+                std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
+                          << std::endl;
+            }
+        }
     }
+
+    if (type == "t" or type == "a") {
+        mode = "tiling";
+        auto start = std::chrono::high_resolution_clock::now();
+        computeSAD_tiling<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+                                                 NUM_QUERIES, dev_minSad, dev_minSadId);
+        auto end = std::chrono::high_resolution_clock::now();
+        total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+        cudaMemcpy(minSad, dev_minSad, NUM_QUERIES * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(minSadId, dev_minSadId, NUM_QUERIES * sizeof(int), cudaMemcpyDeviceToHost);
+
+        if (verbose > 1) {
+            cudaMemcpy(result, result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float), cudaMemcpyDeviceToHost);
+            for (int r = 0; r < NUM_QUERIES * LEN_RESULT; r++) {
+                if (r % LEN_RESULT == 0) std::cout << "\nresult " << r / LEN_RESULT << ": [";
+                std::cout << " " << result[r] << " ";
+                if (r % LEN_RESULT == (LEN_RESULT - 1)) std::cout << "]" << std::endl;
+            }
+        }
+
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+                  << std::endl;
+        if (verbose == 1) {
+            for (int s = 0; s < NUM_QUERIES; s++) {
+                std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
+                          << std::endl;
+            }
+        }
+    }
+
 
     // free host and device data
     curandDestroyGenerator(generator);
