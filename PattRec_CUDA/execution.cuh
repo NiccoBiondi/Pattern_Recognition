@@ -135,87 +135,34 @@ computeSAD_tiling(const float *data, const float *queries, float *result, int LE
     __shared__ float query_sh[TILE_WIDTH];
 
     int LEN_SEQ = LEN_PATTERN_SEQ + LEN_RESULT - 1;
-    int index = threadIdx.x + blockIdx.x * TILE_WIDTH;
-    float tmp_sad;
-    //printf("\n%d, %d, %d", threadIdx.x, blockIdx.x, index);
+    int index = blockIdx.x * TILE_WIDTH + threadIdx.x;
+
+
+    if (index < LEN_SEQ) {
+        data_sh[threadIdx.x] = data[index];
+    } else { data_sh[threadIdx.x] = 0.0; }
+    __syncthreads();    // tiled data loaded on shared mem of the block
 
     for (int q = 0; q < NUM_QUERIES; q++) {
-        for (int p = 0; p < (LEN_SEQ - 1) / TILE_WIDTH + 1; ++p) {
-            if (p * TILE_WIDTH + threadIdx.x < LEN_RESULT) {
-                for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
-                    // we also load with it its next values
-                    data_sh[threadIdx.x + i] = data[p * TILE_WIDTH + threadIdx.x + i];
-                    query_sh[i] = queries[i + q * LEN_RESULT];
-                }
-            } else { data_sh[threadIdx.x] = 0.0; }
-            __syncthreads();
-            if (index < LEN_RESULT) {
-                for (int i = 0; i < TILE_WIDTH; ++i) {
-                    tmp_sad += abs(data_sh[i] - query_sh[i + q * LEN_PATTERN_SEQ]);
+        for (int p = 0; p < (LEN_PATTERN_SEQ - 1) / TILE_WIDTH + 1; p++) {
+            if ((threadIdx.x + p * TILE_WIDTH) < LEN_PATTERN_SEQ) {
+                query_sh[threadIdx.x] = queries[threadIdx.x + p * TILE_WIDTH + q * LEN_PATTERN_SEQ];
+            } else { query_sh[threadIdx.x] = 0.0; }
+            __syncthreads();    // tiled query loaded on shared mem of the block
+
+            if (index < LEN_SEQ) {
+                for (int r = 0; r < TILE_WIDTH; r++) {
+                    if (0 <= (index - (r + p * TILE_WIDTH)) and (index - (r + p * TILE_WIDTH)) < LEN_RESULT and
+                        query_sh[r] != 0.0) {
+                        atomicAdd(&(result[(index - (r + p * TILE_WIDTH)) + q * LEN_RESULT]), abs(
+                                data_sh[threadIdx.x] - query_sh[r]));
+                    }
                 }
             }
             __syncthreads();
-            if (index < LEN_RESULT) {
-                result[index + q * LEN_RESULT] = tmp_sad;
-            }
         }
-    }
-
-
-    /*
-    for (int q = 0; q < NUM_QUERIES; q++) {
-        for (int i = 0; i < LEN_SEQ / TILE_WIDTH; i++) {
-            // check if in tile can enter all the sequence for compute SAD
-            if (threadIdx.x + LEN_PATTERN_SEQ - 1 < TILE_WIDTH) {
-                for (int j = 0; j < LEN_PATTERN_SEQ; j++) {
-                    data_sh[threadIdx.x + j + i * TILE_WIDTH] = data[index + j + i * TILE_WIDTH];
-                    query_sh[threadIdx.x + j + i * TILE_WIDTH + q * LEN_PATTERN_SEQ] = queries[threadIdx.x +
-                                                                                               q * LEN_PATTERN_SEQ + j +
-                                                                                               i * TILE_WIDTH];
-                    printf("\ndata %f", data_sh[threadIdx.x + j + i * TILE_WIDTH]);
-                }
-            }
-            // Barrier for threads in a block
-            __syncthreads();
-            for (int t = 0; t < TILE_WIDTH; t++) {
-                tmp += abs(data_sh[t] - query_sh[t + q * LEN_PATTERN_SEQ]);
-            }
-            result[index + q * LEN_RESULT] = tmp;
-        }
-    }*/
-
-    /*float tmp_sad = 0;
-
-    for (int i = 0; i < LEN_PATTERN_SEQ / TILE_WIDTH; ++i) {
-        // Load into shared mem
-        data_sh[tile_id] = data[i * TILE_WIDTH + threadIdx.x];
-        printf("\n%f ", data_sh[tile_id]);
-        queries_sh[tile_id] = query[i * TILE_WIDTH + threadIdx.x];
-        // Barrier for threads in a block
         __syncthreads();
     }
-
-    if (index < LEN_RESULT) {
-        for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
-            result[index] += abs(data[index + i] - query[i]);
-        }
-    }
-
-    // Barrier for threads in a block
-    __syncthreads();
-
-    if (0 == threadIdx.x) {
-        auto min = (float) LEN_PATTERN_SEQ; // max value
-        int min_index;
-        for (int i = 0; i < LEN_RESULT; i++) {
-            if (result[i] < min) {
-                min = result[i];
-                min_index = i;
-            }
-        }
-        *minSad = min;
-        *minSadId = min_index;
-    }*/
 }
 
 #endif // PATTREC_EXECUTION_CUH

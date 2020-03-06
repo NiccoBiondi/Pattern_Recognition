@@ -9,7 +9,7 @@
 #include <curand.h>
 #include <sstream>
 
-#define TILE_WIDTH 8
+#define TILE_WIDTH 16
 #define THREADS_PER_BLOCK TILE_WIDTH
 #define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }
 
@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
     std::cout << "Welcome to Pattern Recognition" << std::endl;
 
     // default hyper-parameters
-    int LEN_SEQ = 10;
-    int LEN_PATTERN_SEQ = 7;
+    int LEN_SEQ = 25;
+    int LEN_PATTERN_SEQ = 20;
     int NUM_QUERIES = 2;
     int verbose = 1;
     std::string type = "n";
@@ -121,8 +121,9 @@ int main(int argc, char **argv) {
         }
     }
 
+    /** Computing SAD on GPU **/
     auto start = std::chrono::high_resolution_clock::now();
-    computeSAD_tiling<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+    computeSAD_priv<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                            NUM_QUERIES, dev_minSad, dev_minSadId);
     auto end = std::chrono::high_resolution_clock::now();
     float total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
