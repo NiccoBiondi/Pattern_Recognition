@@ -41,7 +41,7 @@ float serialExecution(int LEN_PATTERN_SEQ, int LEN_RESULT, const std::vector<int
                                                      verbose);
         auto end = std::chrono::high_resolution_clock::now();
 
-        auto computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        auto computational_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         total_computational_time += computational_time;
 
         if (verbose != 0) printf("\nResulting statistic: %d, %d for query %d", statistics[0], statistics[1], i);

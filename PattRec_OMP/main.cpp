@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_seq << " msec" << "\n    EXECUTION: " << mode << std::endl;
 
     }
 
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_par << " msec" << "\n    EXECUTION: " << mode << std::endl;
 
         total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                Historical_Data, Queries, verbose);
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
         mode = "parallel level data";
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_par2 << " msec" << "\n    EXECUTION: " << mode << std::endl;
     }
 
     if (type != "s" and type != "p") {

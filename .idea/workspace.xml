@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="Pattern_Recognition" targetName="CUDA" />
       <config projectName="Pattern_Recognition" targetName="OpenMP" />
+      <config projectName="Pattern_Recognition" targetName="CUDA" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -13,11 +13,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dbc10f93-5e14-467d-bc86-2fc586604bee" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/PattRec_CUDA/execution.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_CUDA/execution.cuh" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_CUDA/execution.cuh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_CUDA/main.cu" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_CUDA/main.cu" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_OMP/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_OMP/parallel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/parallel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PattRec_OMP/sequential.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/sequential.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,13 +52,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunManager" selected="CMake Application.OpenMP">
+  <component name="RunManager" selected="CMake Application.CUDA">
     <configuration name="CUDA" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="CUDA" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="CUDA">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OpenMP" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="10000000 100 3 0 a" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="OpenMP" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="OpenMP">
+    <configuration name="OpenMP" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="1000000 100 3 0 a" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="OpenMP" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="OpenMP">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -86,7 +89,8 @@
       <workItem from="1583516922635" duration="2815000" />
       <workItem from="1583519880681" duration="30000" />
       <workItem from="1583521683630" duration="1776000" />
-      <workItem from="1583567182497" duration="8769000" />
+      <workItem from="1583567182497" duration="10605000" />
+      <workItem from="1583584558804" duration="4609000" />
     </task>
     <servers />
   </component>
@@ -94,26 +98,26 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583574075741">
+    <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583586166051">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1583574075741" />
-    <state width="619" height="931" key="GridCell.Tab.0.bottom" timestamp="1583576077146">
+    <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1583586166051" />
+    <state width="619" height="570" key="GridCell.Tab.0.bottom" timestamp="1583588997335">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="619" height="931" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1583576077146" />
-    <state width="619" height="931" key="GridCell.Tab.0.center" timestamp="1583576077146">
+    <state width="619" height="570" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1583588997335" />
+    <state width="619" height="570" key="GridCell.Tab.0.center" timestamp="1583588997335">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="619" height="931" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1583576077146" />
-    <state width="619" height="931" key="GridCell.Tab.0.left" timestamp="1583576077145">
+    <state width="619" height="570" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1583588997335" />
+    <state width="619" height="570" key="GridCell.Tab.0.left" timestamp="1583588997334">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="619" height="931" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1583576077145" />
-    <state width="619" height="931" key="GridCell.Tab.0.right" timestamp="1583576077146">
+    <state width="619" height="570" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1583588997334" />
+    <state width="619" height="570" key="GridCell.Tab.0.right" timestamp="1583588997335">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="619" height="931" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1583576077146" />
+    <state width="619" height="570" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1583588997335" />
     <state width="1874" height="355" key="GridCell.Tab.1.bottom" timestamp="1583508306647">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

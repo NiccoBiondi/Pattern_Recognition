@@ -8,12 +8,10 @@
 #include <cuda_runtime_api.h>
 #include <curand.h>
 #include <sstream>
-
-#define TILE_WIDTH 128
-#define THREADS_PER_BLOCK TILE_WIDTH
-#define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }
+#include <thrust/sort.h>
 
 #include "execution.cuh"
+__constant__ float queries_const[MAX_LEN_Q];
 
 int main(int argc, char **argv) {
 
@@ -28,7 +26,7 @@ int main(int argc, char **argv) {
     int LEN_PATTERN_SEQ = 6;
     int NUM_QUERIES = 2;
     int verbose = 2;
-    std::string type = "t";
+    std::string type = "c";
     std::string mode = "naive";
 
     // set other hyper-parameters with launch arguments
@@ -153,6 +151,12 @@ int main(int argc, char **argv) {
         }
     }
 
+    if (type == "a") {
+        free(result); cudaFree(result_ptr);
+        result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
+        CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
+    }
+
     if (type == "p" or type == "a") {
         mode = "private";
         auto start = std::chrono::high_resolution_clock::now();
@@ -173,6 +177,13 @@ int main(int argc, char **argv) {
             }
         }
 
+        if (type == "a") {
+            free(result);
+            cudaFree(result_ptr);
+            result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
+            CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
+        }
+
         std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " microsec"
                   << std::endl;
         if (verbose >= 1) {
@@ -181,6 +192,12 @@ int main(int argc, char **argv) {
                           << std::endl;
             }
         }
+    }
+
+    if (type == "a") {
+        free(result); cudaFree(result_ptr);
+        result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
+        CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
     }
 
     if (type == "t" or type == "a") {
@@ -213,11 +230,24 @@ int main(int argc, char **argv) {
         }
     }
 
+    if (type == "a") {
+        free(result); cudaFree(result_ptr);
+        result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
+        CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
+    }
+
     if (type == "c" or type == "a") {
-        // FIXME finish me
         mode = "constant";
+
+        // copy back the queries on host from device to use same values
+        cudaMemcpy(queries, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
+        // free device queries memory
+        cudaFree(queries_ptr);
+        // copy queries data on constant memory of device
+        cudaMemcpyToSymbol(queries_const, queries, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float));
+
         auto start = std::chrono::high_resolution_clock::now();
-        computeSAD_constant<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+        computeSAD_constant<<<dimGrid, dimBlock>>>(data_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                    NUM_QUERIES, dev_minSad, dev_minSadId);
         auto end = std::chrono::high_resolution_clock::now();
         total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -258,6 +288,8 @@ int main(int argc, char **argv) {
     free(minSadId);
     cudaFree(dev_minSad);
     cudaFree(dev_minSadId);
+
+    cudaDeviceSynchronize();
 
     return 0;
 }

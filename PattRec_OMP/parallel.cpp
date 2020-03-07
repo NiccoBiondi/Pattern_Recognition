@@ -23,7 +23,7 @@ float parallelExecution_levQ(int LEN_PATTERN_SEQ, int LEN_RESULT, int NUM_QUERIE
 
 
     auto end = std::chrono::high_resolution_clock::now();
-    float total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    float total_computational_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
     return total_computational_time;
 }
@@ -35,19 +35,19 @@ float parallelExecution_levD(int LEN_PATTERN_SEQ, int LEN_RESULT, int NUM_QUERIE
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < NUM_QUERIES; i++) {
-        std::vector<int> query_statistics = queryParallelExecution_lock(LEN_PATTERN_SEQ, LEN_RESULT, data, Queries[i]);
+        std::vector<int> query_statistics = queryParallelExecution(LEN_PATTERN_SEQ, LEN_RESULT, data, Queries[i], verbose);
         if (verbose != 0)
             printf("\nResulting statistic: %d, %d for query %d", query_statistics[0], query_statistics[1], i);
     }
 
     auto end = std::chrono::high_resolution_clock::now();
-    float total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    float total_computational_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
     return total_computational_time;
 }
 
 std::vector<int> queryParallelExecution(int LEN_PATTERN_SEQ, int LEN_RESULT, const std::vector<int> &data,
-                                        const std::vector<int> &query) {
+                                        const std::vector<int> &query, int verbose) {
 
     int nthreads = omp_get_num_procs();
     int SAD, tid;
