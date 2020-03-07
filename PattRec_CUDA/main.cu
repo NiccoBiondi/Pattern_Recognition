@@ -9,7 +9,7 @@
 #include <curand.h>
 #include <sstream>
 
-#define TILE_WIDTH 128
+#define TILE_WIDTH 4
 #define THREADS_PER_BLOCK TILE_WIDTH
 #define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }
 
@@ -24,11 +24,11 @@ int main(int argc, char **argv) {
     std::cout << "Welcome to Pattern Recognition" << std::endl;
 
     // default hyper-parameters
-    int LEN_SEQ = 10000000;
-    int LEN_PATTERN_SEQ = 300;
-    int NUM_QUERIES = 50;
-    int verbose = 0;
-    std::string type = "a";
+    int LEN_SEQ = 10;
+    int LEN_PATTERN_SEQ = 6;
+    int NUM_QUERIES = 2;
+    int verbose = 2;
+    std::string type = "t";
     std::string mode = "naive";
 
     // set other hyper-parameters with launch arguments
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
 
         std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
                   << std::endl;
-        if (verbose == 1) {
+        if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
                 std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
                           << std::endl;
@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
 
         std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
                   << std::endl;
-        if (verbose == 1) {
+        if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
                 std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
                           << std::endl;
@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
     if (type == "t" or type == "a") {
         mode = "tiling";
         auto start = std::chrono::high_resolution_clock::now();
-        computeSAD_tiling<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
+        computeSAD_constant<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                  NUM_QUERIES, dev_minSad, dev_minSadId);
         auto end = std::chrono::high_resolution_clock::now();
         total_computational_time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
 
         std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
                   << std::endl;
-        if (verbose == 1) {
+        if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
                 std::cout << "Query " << s << " : min Sad = " << minSad[s] << " in Result ID = " << minSadId[s]
                           << std::endl;

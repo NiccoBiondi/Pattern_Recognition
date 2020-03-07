@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PattRec_OMP.iml" filepath="$PROJECT_DIR$/.idea/PattRec_OMP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Pattern_Recognition.iml" filepath="$PROJECT_DIR$/.idea/Pattern_Recognition.iml" />
     </modules>
   </component>
 </project>
