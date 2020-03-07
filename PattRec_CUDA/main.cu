@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " microsec"
                   << std::endl;
         if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " microsec"
                   << std::endl;
         if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " microsec"
                   << std::endl;
         if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " ms"
+        std::cout << "\nMode " << mode << " in total computational time: " << total_computational_time << " microsec"
                   << std::endl;
         if (verbose >= 1) {
             for (int s = 0; s < NUM_QUERIES; s++) {
