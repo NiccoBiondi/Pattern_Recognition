@@ -31,9 +31,10 @@ computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int
      **/
 
     int index = threadIdx.x + blockIdx.x * blockDim.x;
-    int LEN_SEQ = LEN_PATTERN_SEQ + LEN_RESULT - 1;
+    //int LEN_SEQ = LEN_PATTERN_SEQ + LEN_RESULT - 1;
 
-    if ((index + LEN_PATTERN_SEQ - 1 < LEN_SEQ) && (threadIdx.x < LEN_RESULT)) {
+    //if ((index + LEN_PATTERN_SEQ - 1 < LEN_SEQ) && (threadIdx.x < LEN_RESULT)) {
+    if (index < LEN_RESULT) {
         for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
             for (int q = 0; q < NUM_QUERIES; q++) {
                 result[index + q * LEN_RESULT] += abs(data[index + i] - queries[i + q * LEN_PATTERN_SEQ]);
@@ -76,7 +77,8 @@ computeSAD_priv(float *data, float *queries, float *result, int LEN_RESULT, int 
 
     for (int q = 0; q < NUM_QUERIES; q++) {
         t_SAD = 0;
-        if ((index + LEN_PATTERN_SEQ - 1 < LEN_SEQ) && (threadIdx.x < LEN_RESULT)) {
+        //if ((index + LEN_PATTERN_SEQ - 1 < LEN_SEQ) && (threadIdx.x < LEN_RESULT)) {
+        if (index < LEN_RESULT) {
             for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
                 t_SAD += abs(data[index + i] - queries[i + q * LEN_PATTERN_SEQ]);
             }
@@ -158,7 +160,6 @@ computeSAD_tiling(const float *data, const float *queries, float *result, int LE
             minSadId[q] = min_index;
         }
     }
-
 }
 
 __global__ void
@@ -179,12 +180,12 @@ computeSAD_constant(const float *data, const float *queries, float *result, int 
     } else { data_sh[threadIdx.x] = 0.0; }
     __syncthreads();    // tiled data loaded on shared mem of the block
 
-    if (index < LEN_RESULT) {
+    if (index < LEN_SEQ) {
         for (int q = 0; q < NUM_QUERIES; q++) {
             for (int r = 0; r < LEN_PATTERN_SEQ; r++) {
                 if (0 <= (index - r) and (index - r) < LEN_RESULT and queries[r] != 0.0) {
                     atomicAdd(&(result[(index - r) + q * LEN_RESULT]), abs(
-                            data_sh[threadIdx.x] - queries[r]));
+                            data_sh[threadIdx.x] - queries[r + q * LEN_PATTERN_SEQ]));
                 }
             }
         }

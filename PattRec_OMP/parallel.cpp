@@ -98,8 +98,9 @@ std::vector<int> queryParallelExecution_lock(int LEN_PATTERN_SEQ, int LEN_RESULT
             if (SAD < thread_min) {
                 thread_min = SAD;
             }
-        }
+        } // each thread compute its min SAD
 #pragma omp flush(min_SAD)
+        // flush global min and eventually update it
         if (thread_min < min_SAD) {
 #pragma omp critical
             if (thread_min < min_SAD) {
@@ -107,7 +108,7 @@ std::vector<int> queryParallelExecution_lock(int LEN_PATTERN_SEQ, int LEN_RESULT
                 min_SAD_id = tid;
             }
         }
-    };
+    }
 
     std::vector<int> statistics = {min_SAD, min_SAD_id};
     return statistics;

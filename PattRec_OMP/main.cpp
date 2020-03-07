@@ -32,17 +32,17 @@ int main(int argc, char *argv[]) {
     // set other hyper-parameters with launch arguments
     if (argc == 6) {
         // convert the string argv[1] parameter in int
-        std::string s_NUM_QUERIES = argv[1];
-        std::stringstream parser(s_NUM_QUERIES);
-        parser >> NUM_QUERIES;
+        std::string s_LEN_SEQ = argv[1];
+        std::stringstream parser(s_LEN_SEQ);
+        parser >> LEN_SEQ;
 
-        std::string s_LEN_SEQ = argv[2];
-        std::stringstream parser1(s_LEN_SEQ);
-        parser1 >> LEN_SEQ;
+        std::string s_LEN_PATTERN_SEQ = argv[2];
+        std::stringstream parser1(s_LEN_PATTERN_SEQ);
+        parser1 >> LEN_PATTERN_SEQ;
 
-        std::string s_LEN_PATTERN_SEQ = argv[3];
-        std::stringstream parser2(s_LEN_PATTERN_SEQ);
-        parser2 >> LEN_PATTERN_SEQ;
+        std::string s_NUM_QUERIES = argv[3];
+        std::stringstream parser2(s_NUM_QUERIES);
+        parser2 >> NUM_QUERIES;
 
         std::string s_verbose = argv[4];
         std::stringstream parser3(s_verbose);
@@ -71,12 +71,13 @@ int main(int argc, char *argv[]) {
     // define list of vector of required data and iterators
     std::vector<int> Historical_Data = generator_data(LEN_SEQ, generator, distribution, verbose);
     std::vector<std::vector<int>> Queries(NUM_QUERIES);
-
     for (int i = 0; i < NUM_QUERIES; i++) {
         Queries[i] = generator_pattern(LEN_PATTERN_SEQ, generator, distribution, verbose);
     }
 
-    float total_computational_time_seq, total_computational_time_par, total_computational_time_par2;
+    float total_computational_time_seq = 0.0;
+    float total_computational_time_par = 0.0;
+    float total_computational_time_par2 = 0.0;
 
     if (type == "s" or type != "p") {
         /* sequential execution */
@@ -85,7 +86,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_seq << " ms" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode << std::endl;
 
     }
 
@@ -97,7 +98,7 @@ int main(int argc, char *argv[]) {
 
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_par << " ms" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode << std::endl;
 
         total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                Historical_Data, Queries, verbose);
@@ -105,7 +106,7 @@ int main(int argc, char *argv[]) {
         mode = "parallel level data";
         std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                   << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                  << total_computational_time_par2 << " ms" << "\n    EXECUTION: " << mode << std::endl;
+                  << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode << std::endl;
     }
 
     if (type != "s" and type != "p") {
