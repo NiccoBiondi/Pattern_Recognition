@@ -26,14 +26,15 @@ inline double compute_std(std::vector<float> v) {
     return std::sqrt(sq_sum / v.size());
 }
 
-inline void save_result(const float *v, int size, const std::string& mode, std::string save_path) {
-    std::string path = save_path + "CUDA_" + mode + ".csv";
+inline void
+save_result(const float *v, int size, const std::string &mode, std::string save_path, std::string testing_var) {
+    std::string path = save_path + "CUDA_" + mode + "_" + testing_var + ".csv";
     std::ofstream csvFile(path);
-    for (int r = 0; r < size; r=r+3) {
+    for (int r = 0; r < size; r = r + 3) {
         // write mean,std
         csvFile << v[r] << ",";
-        csvFile << v[r+1] << ",";
-        csvFile << v[r+2] << std::endl;
+        csvFile << v[r + 1] << ",";
+        csvFile << v[r + 2] << std::endl;
     }
     csvFile.close();
 }

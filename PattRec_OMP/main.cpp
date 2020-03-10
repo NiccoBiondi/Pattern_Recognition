@@ -31,10 +31,10 @@ int main(int argc, char *argv[]) {
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
+    std::string testing_var = "LEN_SEQ"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
-
         // lunghezza sequenza
         std::string s_LEN_SEQ = argv[1];
         std::stringstream parser1(s_LEN_SEQ);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         std::stringstream parser5(s_iter);
         parser5 >> iterations;
 
-        // tipologia technica
+        // tipologia tecnica
         type = argv[6];
 
         std::string s_verbose = argv[7];
@@ -112,11 +112,10 @@ int main(int argc, char *argv[]) {
                 mode = "sequential";
                 total_computational_time_seq = serialExecution(LEN_PATTERN_SEQ, LEN_RESULT, Historical_Data, Queries,
                                                                verbose);
-
+                t_s.push_back(total_computational_time_seq);
                 std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                           << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_seq << " msec" << "\n    EXECUTION: " << mode << std::endl;
-                t_s.push_back(total_computational_time_seq);
+                          << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode << std::endl;
             }
 
             if (type == "p" or type == "a") {
@@ -127,7 +126,7 @@ int main(int argc, char *argv[]) {
                 t_p.push_back(total_computational_time_par);
                 std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                           << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_par << " msec" << "\n    EXECUTION: " << mode << std::endl;
+                          << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode << std::endl;
             }
             if (type == "p1" or type == "a") {
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -136,7 +135,7 @@ int main(int argc, char *argv[]) {
                 mode = "parallel_lv_data";
                 std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
                           << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_par2 << " msec" << "\n    EXECUTION: " << mode << std::endl;
+                          << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode << std::endl;
             }
 
             /*if (type != "s" and type != "p" and verbose > 1) {
@@ -148,6 +147,7 @@ int main(int argc, char *argv[]) {
             }*/
         }
 
+        // FIXME change the var if you change var for test!!!
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
@@ -164,11 +164,12 @@ int main(int argc, char *argv[]) {
             statistic[it + 2] = LEN_SEQ;
         }
 
+        // FIXME change the var if you change var for test!!!
         // update len seq over iterations
         LEN_SEQ *= 5;
     }
 
-    save_result(statistic, size, mode, path);
+    save_result(statistic, size, mode, path, testing_var);
 
     return 0;
 }

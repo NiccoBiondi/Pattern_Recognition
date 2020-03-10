@@ -17,20 +17,21 @@
 
 /* Generate a sample historical data of specific length with a generator of rand number from 0 to 100. */
 std::vector<int> generator_data(int LEN_SEQ, std::default_random_engine &generator,
-        std::uniform_int_distribution<int> &distribution, int verbose);
+                                std::uniform_int_distribution<int> &distribution, int verbose);
 
 /* Generate a sample pattern data of specific length with a generator of rand number from 0 to 100. */
 std::vector<int> generator_pattern(int LEN_PATTERN_SEQ, std::default_random_engine &generator,
-        std::uniform_int_distribution<int> &distribution, int verbose);
+                                   std::uniform_int_distribution<int> &distribution, int verbose);
 
-inline void save_result(const float *v, int size, const std::string& mode, std::string save_path) {
-    std::string path = save_path + "CPP_" + mode + ".csv";
+inline void
+save_result(const float *v, int size, const std::string &mode, std::string save_path, std::string testing_var) {
+    std::string path = save_path + "CPP_" + mode + "_" + testing_var + ".csv";
     std::ofstream csvFile(path);
-    for (int r = 0; r < size; r=r+3) {
+    for (int r = 0; r < size; r = r + 3) {
         // write mean,std
         csvFile << v[r] << ",";
-        csvFile << v[r+1] << ",";
-        csvFile << v[r+2] << std::endl;
+        csvFile << v[r + 1] << ",";
+        csvFile << v[r + 2] << std::endl;
     }
     csvFile.close();
 }

@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
     int NUM_QUERIES = 2;
     int verbose = 1;
     int iterations = 2;
-    std::string type = "n";
-    std::string mode = "tiling";     // mode: naive private tiling or constant
-    // number of runs to compute speed up mean and std
-    int RUNS = 2;
+    std::string type = "n";                 // type: n=naive, p=private, t=tiling, c=constant
+    std::string mode = "tiling";            // mode: naive private tiling or constant
+    int RUNS = 2;                           // number of runs to compute computational time mean and std
+    std::string testing_var = "LEN_SEQ";    // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
@@ -83,11 +83,11 @@ int main(int argc, char **argv) {
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
         one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
-        LEN_SEQ *= 5;
+        LEN_SEQ *= 5;   // FIXME change the var if you change var for test!!!
     }
 
     // save in csv statistics
-    save_result(statistic, size, mode, path);
+    save_result(statistic, size, mode, path, testing_var);
 
     return 0;
 }

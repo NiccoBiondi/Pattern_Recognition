@@ -286,6 +286,7 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         statistic[it + 1] = std_c;
     }
 
+    // FIXME change the var if you change var for test!!!
     statistic[it + 2] = LEN_SEQ;
 
     // free host and device data
