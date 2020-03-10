@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     int size = iterations * 3;
     statistic = (float *) malloc(size * sizeof(float));
 
-    for (int it = 0; it < iterations*3; it=it+3) {
+    for (int it = 0; it < iterations * 3; it = it + 3) {
         one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
         LEN_SEQ *= 5;
     }
