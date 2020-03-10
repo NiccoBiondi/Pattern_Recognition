@@ -22,38 +22,45 @@ int main(int argc, char *argv[]) {
     printf("\nWelcome to Pattern Recognition!!! \n\n");
 
     // define default hyper-parameters
+    std::string path = "Result/";
     int NUM_QUERIES = 5;
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 4;
     int verbose = 1;
-    std::string type = "s";     // s for sequential mode  or p for parallel mode
+    std::string type = "s";     // s for sequential mode or p for parallel query mode or p1 data level parallel
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
-        // convert the string argv[1] parameter in int
+
+        // lunghezza sequenza
         std::string s_LEN_SEQ = argv[1];
         std::stringstream parser1(s_LEN_SEQ);
         parser1 >> LEN_SEQ;
 
+        // len single query
         std::string s_LEN_PATTERN_SEQ = argv[2];
         std::stringstream parser2(s_LEN_PATTERN_SEQ);
         parser2 >> LEN_PATTERN_SEQ;
 
+        // numero totale di query
         std::string s_NUM_QUERIES = argv[3];
         std::stringstream parser3(s_NUM_QUERIES);
         parser3 >> NUM_QUERIES;
 
+        // numero di volte in cui faccio media e std (10)
         std::string s_runs = argv[4];
         std::stringstream parser4(s_runs);
         parser4 >> RUNS;
 
+        // numero di volte che voglio cambiare la lunghezza sequenza
         std::string s_iter = argv[5];
         std::stringstream parser5(s_iter);
         parser5 >> iterations;
 
+        // tipologia technica
         type = argv[6];
 
         std::string s_verbose = argv[7];
@@ -161,7 +168,7 @@ int main(int argc, char *argv[]) {
         LEN_SEQ *= 5;
     }
 
-    save_result(statistic, size, mode);
+    save_result(statistic, size, mode, path);
 
     return 0;
 }

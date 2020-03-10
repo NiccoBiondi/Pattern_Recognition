@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
     std::cout << "Welcome to Pattern Recognition" << std::endl;
 
     // default hyper-parameters
+    std::string path = "Result/";
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 6;
     int NUM_QUERIES = 2;
@@ -86,7 +87,7 @@ int main(int argc, char **argv) {
     }
 
     // save in csv statistics
-    save_result(statistic, size, mode);
+    save_result(statistic, size, mode, path);
 
     return 0;
 }
