@@ -26,8 +26,8 @@ inline double compute_std(std::vector<float> v) {
     return std::sqrt(sq_sum / v.size());
 }
 
-inline void save_result(const float *v, int size, const std::string& mode) {
-    std::string path = "/home/nicco/Documents/Progetti/ParallelComp-Projects/Pattern_Recognition/Result/CUDA_" + mode + ".csv";
+inline void save_result(const float *v, int size, const std::string& mode, std::string save_path) {
+    std::string path = save_path + "CUDA_" + mode + ".csv";
     std::ofstream csvFile(path);
     for (int r = 0; r < size; r=r+3) {
         // write mean,std

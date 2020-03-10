@@ -23,8 +23,8 @@ std::vector<int> generator_data(int LEN_SEQ, std::default_random_engine &generat
 std::vector<int> generator_pattern(int LEN_PATTERN_SEQ, std::default_random_engine &generator,
         std::uniform_int_distribution<int> &distribution, int verbose);
 
-inline void save_result(const float *v, int size, const std::string& mode) {
-    std::string path = "/home/nicco/Documents/Progetti/ParallelComp-Projects/Pattern_Recognition/Result/CPP_" + mode + ".csv";
+inline void save_result(const float *v, int size, const std::string& mode, std::string save_path) {
+    std::string path = save_path + "CPP_" + mode + ".csv";
     std::ofstream csvFile(path);
     for (int r = 0; r < size; r=r+3) {
         // write mean,std

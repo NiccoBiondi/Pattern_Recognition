@@ -18,8 +18,6 @@
       <change beforePath="$PROJECT_DIR$/PattRec_CUDA/utilities.h" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_CUDA/utilities.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_OMP/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PattRec_OMP/utilities.h" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/utilities.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Result/naive.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Result/tiling.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,12 +55,12 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.OpenMP">
-    <configuration name="CUDA" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="10000 1000 10 10 3 t 0" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="CUDA" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="CUDA">
+    <configuration name="CUDA" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="10000 1000 10 10 3 t 0" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="CUDA" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="CUDA">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OpenMP" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="1000 100 3 10 3 p1 0" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="OpenMP" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="OpenMP">
+    <configuration name="OpenMP" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="1000 100 3 10 3 p1 0" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pattern_Recognition" TARGET_NAME="OpenMP" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pattern_Recognition" RUN_TARGET_NAME="OpenMP">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -103,6 +101,8 @@
       <workItem from="1583790501925" duration="1970000" />
       <workItem from="1583824789693" duration="4472000" />
       <workItem from="1583855681053" duration="4229000" />
+      <workItem from="1583861135762" duration="406000" />
+      <workItem from="1583861554393" duration="620000" />
     </task>
     <servers />
   </component>
@@ -110,10 +110,15 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583860154739">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="592" y="229" width="732" height="645" key="#Inspections" timestamp="1583861578868">
+      <screen x="0" y="27" width="1920" height="1052" />
+    </state>
+    <state x="592" y="229" width="732" height="645" key="#Inspections/0.27.1920.1052@0.27.1920.1052" timestamp="1583861578868" />
+    <state x="836" y="386" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583862173741">
+      <screen x="0" y="27" width="1920" height="1052" />
     </state>
     <state x="836" y="385" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1583860154739" />
+    <state x="836" y="386" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1052@0.27.1920.1052" timestamp="1583862173741" />
     <state x="693" y="289" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1583859738149">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
