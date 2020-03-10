@@ -12,15 +12,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbc10f93-5e14-467d-bc86-2fc586604bee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PattRec_CUDA/main.cu" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_CUDA/main.cu" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PattRec_CUDA/utilities.h" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_CUDA/utilities.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PattRec_OMP/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PattRec_OMP/utilities.h" beforeDir="false" afterPath="$PROJECT_DIR$/PattRec_OMP/utilities.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Result/naive.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Result/tiling.csv" beforeDir="false" />
-    </list>
+    <list default="true" id="dbc10f93-5e14-467d-bc86-2fc586604bee" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +94,7 @@
       <workItem from="1583787996415" duration="196000" />
       <workItem from="1583790501925" duration="1970000" />
       <workItem from="1583824789693" duration="4472000" />
-      <workItem from="1583855681053" duration="4229000" />
+      <workItem from="1583855681053" duration="4840000" />
     </task>
     <servers />
   </component>
@@ -118,22 +110,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="693" y="289" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1583859738149" />
-    <state width="1874" height="355" key="GridCell.Tab.0.bottom" timestamp="1583831115410">
+    <state width="619" height="491" key="GridCell.Tab.0.bottom" timestamp="1583860766070">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="355" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1583831115410" />
-    <state width="1874" height="355" key="GridCell.Tab.0.center" timestamp="1583831115409">
+    <state width="619" height="491" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1583860766070" />
+    <state width="619" height="491" key="GridCell.Tab.0.center" timestamp="1583860766069">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="355" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1583831115409" />
-    <state width="1874" height="355" key="GridCell.Tab.0.left" timestamp="1583831115409">
+    <state width="619" height="491" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1583860766069" />
+    <state width="619" height="491" key="GridCell.Tab.0.left" timestamp="1583860766068">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="355" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1583831115409" />
-    <state width="1874" height="355" key="GridCell.Tab.0.right" timestamp="1583831115410">
+    <state width="619" height="491" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1583860766068" />
+    <state width="619" height="491" key="GridCell.Tab.0.right" timestamp="1583860766069">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1874" height="355" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1583831115410" />
+    <state width="619" height="491" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1583860766069" />
     <state width="1874" height="355" key="GridCell.Tab.1.bottom" timestamp="1583831115411">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
