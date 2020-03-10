@@ -4,7 +4,7 @@ project(Pattern_Recognition)
 
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 
 include_directories(PattRec_CUDA PattRec_OMP)
 
@@ -20,7 +20,8 @@ if (CUDA_FOUND)
     add_executable(CUDA PattRec_CUDA/main.cu PattRec_CUDA/execution.cuh PattRec_CUDA/execution.cu PattRec_CUDA/utilities.h PattRec_CUDA/iteration.cu PattRec_CUDA/iteration.cuh PattRec_CUDA/macros.h)
     add_executable(OpenMP PattRec_OMP/main.cpp PattRec_OMP/parallel.h PattRec_OMP/parallel.cpp PattRec_OMP/sequential.h
             PattRec_OMP/sequential.cpp PattRec_OMP/utilities.h PattRec_OMP/utilities.cpp)
-    target_link_libraries(CUDA -lcurand)
+    target_link_libraries(CUDA -lcurand -lstdc++fs)
+    target_link_libraries(OpenMP -lstdc++fs)
     set_target_properties(
             CUDA
             PROPERTIES
@@ -29,13 +30,8 @@ if (CUDA_FOUND)
 
 else ()
     # using CPU
-
-    if (OPENMP_FOUND)
-        # using OpenMP
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-    endif (OPENMP_FOUND)
-
     add_executable(OpenMP PattRec_OMP/main.cpp PattRec_OMP/parallel.h PattRec_OMP/parallel.cpp PattRec_OMP/sequential.h
             PattRec_OMP/sequential.cpp PattRec_OMP/utilities.h PattRec_OMP/utilities.cpp)
+    target_link_libraries(OpenMP -lstdc++fs)
 
 endif (CUDA_FOUND)

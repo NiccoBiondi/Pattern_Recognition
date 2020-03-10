@@ -10,12 +10,14 @@
 #include <cuda_runtime_api.h>
 #include <curand.h>
 #include <thrust/sort.h>
+#include <experimental/filesystem>
 
 #include "execution.cuh"
 #include "iteration.cuh"
 #include "macros.h"
 
 __constant__ float queries_const[MAX_LEN_Q];
+namespace fs = std::experimental::filesystem;
 
 int main(int argc, char **argv) {
 
@@ -23,10 +25,17 @@ int main(int argc, char **argv) {
     std::cout << "cuda defined" << std::endl;
 #endif
 
-    std::cout << "Welcome to Pattern Recognition" << std::endl;
+    // take the current path and replace for correct saving path (Result/)
+    // both using terminal or clion run.
+    std::string path = fs::current_path();
+    std::string r_path = "Result/";
+    if (path.find("cmake") != std::string::npos){
+        path.replace(path.end() - 17, path.end(), r_path);
+    } else { path += "/" + r_path; }
+
+    printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
 
     // default hyper-parameters
-    std::string path = "Result/";
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 6;
     int NUM_QUERIES = 2;

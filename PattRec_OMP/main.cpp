@@ -10,19 +10,31 @@
 #include <iostream>
 #include <random>
 #include <vector>
-#include <chrono>
+#include <string>
 #include <algorithm>
+#include <experimental/filesystem>
 
 #include "utilities.h"
 #include "sequential.h"
 #include "parallel.h"
 
+namespace fs = std::experimental::filesystem;
+
 int main(int argc, char *argv[]) {
 
-    printf("\nWelcome to Pattern Recognition!!! \n\n");
+    // take the current path and replace for correct saving path (Result/)
+    // both using terminal or clion run.
+    std::string path = fs::current_path();
+    std::string r_path = "Result/";
+    if (path.find("cmake") != std::string::npos){
+        path.replace(path.end() - 17, path.end(), r_path);
+    } else { path += "/" + r_path; }
+
+    printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
+
 
     // define default hyper-parameters
-    std::string path = "Result/";
+    std::string path1 = "Result/";
     int NUM_QUERIES = 5;
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 4;
@@ -86,7 +98,7 @@ int main(int argc, char *argv[]) {
 
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
-        // define a uniform distribution to sample data/query values
+        // define path uniform distribution to sample data/query values
         std::default_random_engine generator;
         std::uniform_int_distribution<int> distribution(0, 100);
 
@@ -107,7 +119,7 @@ int main(int argc, char *argv[]) {
             float total_computational_time_par = 0.0;
             float total_computational_time_par2 = 0.0;
 
-            if (type == "s" or type == "a") {
+            if (type == "s" or type == "path") {
                 /* sequential execution */
                 mode = "sequential";
                 total_computational_time_seq = serialExecution(LEN_PATTERN_SEQ, LEN_RESULT, Historical_Data, Queries,
@@ -118,7 +130,7 @@ int main(int argc, char *argv[]) {
                           << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode << std::endl;
             }
 
-            if (type == "p" or type == "a") {
+            if (type == "p" or type == "path") {
                 /* parallel execution */
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -128,7 +140,7 @@ int main(int argc, char *argv[]) {
                           << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
                           << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode << std::endl;
             }
-            if (type == "p1" or type == "a") {
+            if (type == "p1" or type == "path") {
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                        Historical_Data, Queries, verbose);
                 t_p1.push_back(total_computational_time_par2);
