@@ -29,14 +29,15 @@ int main(int argc, char **argv) {
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 6;
     int NUM_QUERIES = 2;
-    int verbose = 2;
-    std::string type = "c";
-    std::string mode = "naive";
+    int verbose = 1;
+    int iterations = 2;
+    std::string type = "n";
+    std::string mode = "tiling";     // mode: naive private tiling or constant
     // number of runs to compute speed up mean and std
-    int RUNS = 10;
+    int RUNS = 2;
 
     // set other hyper-parameters with launch arguments
-    if (argc == 7) {
+    if (argc == 8) {
         // convert the string argv[1] parameter in int
         std::string s_LEN_SEQ = argv[1];
         std::stringstream parser1(s_LEN_SEQ);
@@ -54,9 +55,13 @@ int main(int argc, char **argv) {
         std::stringstream parser4(s_runs);
         parser4 >> RUNS;
 
-        type = argv[5];
+        std::string s_iter = argv[5];
+        std::stringstream parser5(s_iter);
+        parser5 >> iterations;
 
-        std::string s_verbose = argv[6];
+        type = argv[6];
+
+        std::string s_verbose = argv[7];
         std::stringstream parser6(s_verbose);
         parser6 >> verbose;
 
@@ -71,9 +76,17 @@ int main(int argc, char **argv) {
                   << LEN_PATTERN_SEQ << " as len of each query; " << verbose << " as verbose." << std::endl;
     }
 
-    for (int dim = 0; dim < RUNS; dim++ ) {
-        one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose);
+    float *statistic;
+    int size = iterations * 3;
+    statistic = (float *) malloc(size * sizeof(float));
+
+    for (int it = 0; it < iterations*3; it=it+3) {
+        one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
+        LEN_SEQ *= 5;
     }
+
+    // save in csv statistics
+    save_result(statistic, size, mode);
 
     return 0;
 }

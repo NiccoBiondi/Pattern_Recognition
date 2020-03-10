@@ -5,7 +5,15 @@
 #include "iteration.cuh"
 
 void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
-                   std::string mode, int verbose) {
+                   std::string mode, int verbose, float *statistic, int it) {
+
+    /**
+     * one iteration of the main loop. It takes some hyper-parameters and compute some (RUNS) runs to compute mean and
+     * std of the some (type) modalities. Those values are stored in statistic for writing in csv file (see main).
+     * **/
+
+    std::cout << "\nThe new value of LEN SEQ is " << LEN_SEQ << std::endl;
+
     // compute hyper parameters after initialization
     int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
     // check if the hyper pars are correct
@@ -69,9 +77,9 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
     /***** Computing SAD on GPU *****/
     for (int run = 0; run < RUNS; run++) {
 
-        std::cout << "\nSTARTING RUN " << run << std::endl;
+        if (run%(RUNS/2) == 0) std::cout << "STARTING RUN " << run << std::endl;
 
-        // define data to store results of each run
+        // define data to store statistic of each run
         float *result, *result_ptr;
         result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
         CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
@@ -111,11 +119,9 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         }
 
         if (type == "a") {
-            free(result);
-            cudaFree(result_ptr);
+            reset_result(result, result_ptr, LEN_RESULT, NUM_QUERIES);
             result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
             CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
-
         }
 
         if (type == "p" or type == "a") {
@@ -153,12 +159,9 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         }
 
         if (type == "a") {
-            free(result);
-            cudaFree(result_ptr);
-
+            reset_result(result, result_ptr, LEN_RESULT, NUM_QUERIES);
             result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
             CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
-
         }
 
         if (type == "t" or type == "a") {
@@ -196,8 +199,7 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         }
 
         if (type == "a") {
-            free(result);
-            cudaFree(result_ptr);
+            reset_result(result, result_ptr, LEN_RESULT, NUM_QUERIES);
             result = (float *) malloc(NUM_QUERIES * LEN_RESULT * sizeof(float));
             CUDA_CHECK_RETURN(cudaMalloc((void **) &result_ptr, NUM_QUERIES * LEN_RESULT * sizeof(float)))
         }
@@ -243,9 +245,7 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
             t_c.push_back(total_computational_time);
         }
 
-        // delete result at the end of each run
-        free(result);
-        cudaFree(result_ptr);
+        reset_result(result, result_ptr, LEN_RESULT, NUM_QUERIES);
     }
 
     std::cout << std::endl;
@@ -255,7 +255,8 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         double std_n = compute_std(t_n);
         std::cout << "In " << RUNS << " runs the NAIVE mode reports " << t_m_n
                   << " microsec of mean with " << std_n << " of std" << std::endl;
-        save_result(t_n, "prova");
+        statistic[it] = t_m_n;
+        statistic[it + 1] = std_n;
     }
 
     if (type == "p" or type == "a") {
@@ -263,6 +264,8 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         double std_p = compute_std(t_p);
         std::cout << "In " << RUNS << " runs the PRIVATE mode reports " << t_m_p
                   << " microsec of mean with " << std_p << " of std" << std::endl;
+        statistic[it] = t_m_p;
+        statistic[it + 1] = std_p;
     }
 
     if (type == "t" or type == "a") {
@@ -270,6 +273,8 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         double std_t = compute_std(t_t);
         std::cout << "In " << RUNS << " runs the TILING mode reports " << t_m_t
                   << " microsec of mean with " << std_t << " of std" << std::endl;
+        statistic[it] = t_m_t;
+        statistic[it + 1] = std_t;
     }
 
     if (type == "c" or type == "a") {
@@ -277,13 +282,18 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
         double std_c = compute_std(t_c);
         std::cout << "In " << RUNS << " runs the CONSTANT mode reports " << t_m_c
                   << " microsec of mean with " << std_c << " of std" << std::endl;
+        statistic[it] = t_m_c;
+        statistic[it + 1] = std_c;
     }
+
+    statistic[it + 2] = LEN_SEQ;
 
     // free host and device data
     curandDestroyGenerator(generator);
     free(data);
-    free(queries);
     cudaFree(data_ptr);
+
+    free(queries);
     cudaFree(queries_ptr);
 
     free(minSad);
@@ -293,5 +303,5 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
 
     cudaDeviceReset();
 
-
+    return;
 }

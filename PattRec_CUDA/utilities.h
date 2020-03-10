@@ -26,15 +26,16 @@ inline double compute_std(std::vector<float> v) {
     return std::sqrt(sq_sum / v.size());
 }
 
-inline void save_result(const std::vector<float> &v, const std::string& mode) {
+inline void save_result(const float *v, int size, const std::string& mode) {
     std::string path = "/home/nicco/Documents/Progetti/ParallelComp-Projects/Pattern_Recognition/Result/" + mode + ".csv";
     std::ofstream csvFile(path);
-    for (int r = 0; r < v.size(); r++) {
-        csvFile << v[r] << std::endl;
+    for (int r = 0; r < size; r=r+3) {
+        // write mean,std
+        csvFile << v[r] << ",";
+        csvFile << v[r+1] << ",";
+        csvFile << v[r+2] << std::endl;
     }
     csvFile.close();
 }
-
-void one_iteration();
 
 #endif //PATTERN_RECOGNITION_UTILITIES_H

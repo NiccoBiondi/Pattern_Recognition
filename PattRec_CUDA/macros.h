@@ -5,8 +5,8 @@
 #ifndef PATTERN_RECOGNITION_MACROS_H
 #define PATTERN_RECOGNITION_MACROS_H
 
-#define NUM_Q 2
-#define LEN_QUERY 6
+#define NUM_Q 10
+#define LEN_QUERY 1000
 #define TILE_WIDTH 128
 #define THREADS_PER_BLOCK TILE_WIDTH
 #define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }

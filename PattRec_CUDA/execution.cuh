@@ -32,4 +32,5 @@ __global__ void
 computeSAD_constant(const float *data, float *result, int LEN_RESULT,
                     int LEN_PATTERN_SEQ, int NUM_QUERIES, float *minSad, int *minSadId);
 
+
 #endif // PATTREC_EXECUTION_CUH
