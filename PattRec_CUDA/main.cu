@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 6;
     int NUM_QUERIES = 2;
-    int verbose = 1;
+    int verbose = 0;
     int iterations = 2;
     std::string type = "n";                 // type: n=naive, p=private, t=tiling, c=constant
-    std::string mode = "tiling";            // mode: naive private tiling or constant
+    std::string mode = "naive";             // mode: naive private tiling or constant
     int RUNS = 2;                           // number of runs to compute computational time mean and std
     std::string testing_var = "LEN_SEQ";    // FIXME change the var if you change var for test!!!
 

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     int NUM_QUERIES = 5;
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 4;
-    int verbose = 1;
+    int verbose = 0;
     std::string type = "s";     // s for sequential mode or p for parallel query mode or p1 data level parallel
     std::string mode = "sequential";
     int iterations = 2;
