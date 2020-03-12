@@ -91,7 +91,8 @@ int main(int argc, char **argv) {
     statistic = (float *) malloc(size * sizeof(float));
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
-        one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
+        // return mode that is the correct string for csv name
+        mode = one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
         LEN_SEQ *= 5;   // FIXME change the var if you change var for test!!!
     }
 

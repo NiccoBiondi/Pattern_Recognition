@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     // both using terminal or clion run.
     std::string path = fs::current_path();
     std::string r_path = "Result/";
-    if (path.find("cmake") != std::string::npos){
+    if (path.find("cmake") != std::string::npos) {
         path.replace(path.end() - 17, path.end(), r_path);
     } else { path += "/" + r_path; }
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     statistic = (float *) malloc(size * sizeof(float));
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
-
+        printf("\n LEN SEQ %d \n", LEN_SEQ);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
         // define path uniform distribution to sample data/query values
@@ -115,6 +115,8 @@ int main(int argc, char *argv[]) {
 
         for (int run = 0; run < RUNS; run++) {
 
+            if (run % (RUNS / 2) == 0) std::cout << "STARTING RUN " << run << std::endl;
+
             float total_computational_time_seq = 0.0;
             float total_computational_time_par = 0.0;
             float total_computational_time_par2 = 0.0;
@@ -125,9 +127,14 @@ int main(int argc, char *argv[]) {
                 total_computational_time_seq = serialExecution(LEN_PATTERN_SEQ, LEN_RESULT, Historical_Data, Queries,
                                                                verbose);
                 t_s.push_back(total_computational_time_seq);
-                std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
-                          << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+
+                if (verbose > 0) {
+                    std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
+                              << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES
+                              << "\n    TOTAL COMPUTATION TIME: "
+                              << total_computational_time_seq << " microsec" << "\n    EXECUTION: " << mode
+                              << std::endl;
+                }
             }
 
             if (type == "p" or type == "path") {
@@ -136,18 +143,29 @@ int main(int argc, char *argv[]) {
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                       Historical_Data, Queries, verbose);
                 t_p.push_back(total_computational_time_par);
-                std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
-                          << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+
+                if (verbose > 0) {
+                    std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
+                              << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES
+                              << "\n    TOTAL COMPUTATION TIME: "
+                              << total_computational_time_par << " microsec" << "\n    EXECUTION: " << mode
+                              << std::endl;
+                }
             }
+
             if (type == "p1" or type == "path") {
+                mode = "parallel_lv_data_lock";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                        Historical_Data, Queries, verbose);
                 t_p1.push_back(total_computational_time_par2);
-                mode = "parallel_lv_data";
-                std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
-                          << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES << "\n    TOTAL COMPUTATION TIME: "
-                          << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode << std::endl;
+
+                if (verbose > 0) {
+                    std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
+                              << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES
+                              << "\n    TOTAL COMPUTATION TIME: "
+                              << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode
+                              << std::endl;
+                }
             }
 
             /*if (type != "s" and type != "p" and verbose > 1) {

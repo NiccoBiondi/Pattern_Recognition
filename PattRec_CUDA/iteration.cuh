@@ -18,7 +18,7 @@
 #include "utilities.h"
 #include "macros.h"
 
-void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
+std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
                    std::string mode, int verbose, float *statistic, int it);
 
 inline void reset_result(float *result, float *result_ptr, int LEN_RESULT, int NUM_QUERIES) {

@@ -35,7 +35,7 @@ float parallelExecution_levD(int LEN_PATTERN_SEQ, int LEN_RESULT, int NUM_QUERIE
 /* Define the parallel computation of SAD for one query on the historical data with result len nthread.
  * */
 std::vector<int> queryParallelExecution(int LEN_PATTERN_SEQ, int LEN_RESULT,
-                                         const std::vector<int> &data, const std::vector<int> &query, int verbose);
+                                         const std::vector<int> &data, const std::vector<int> &query);
 
 /* Define the parallel computation of SAD for one query on the historical data with critical section.
  * */

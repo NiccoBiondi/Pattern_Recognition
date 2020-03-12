@@ -4,7 +4,7 @@
 
 #include "iteration.cuh"
 
-void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
+std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
                    std::string mode, int verbose, float *statistic, int it) {
 
     /**
@@ -304,5 +304,6 @@ void one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, 
 
     cudaDeviceReset();
 
-    return;
+    // return mode that is the correct string for csv name
+    return mode;
 }
