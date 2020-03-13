@@ -1,0 +1,6 @@
+The following are the default parameters that we change for testing the different implementations
+
+10 runs for mean and std of each implementations
+100000 length of historical data
+1000 length of pattern sequence (each query)
+50 numbers of queries

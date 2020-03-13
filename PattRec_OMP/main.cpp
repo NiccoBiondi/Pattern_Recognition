@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
 
     printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
 
-
     // define default hyper-parameters
     std::string path1 = "Result/";
     int NUM_QUERIES = 5;
@@ -43,36 +42,36 @@ int main(int argc, char *argv[]) {
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
-    std::string testing_var = "LEN_PATTERN_SEQ"; // FIXME change the var if you change var for test!!!
+    std::string testing_var = "NUM_QUERIES"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
-        // lunghezza sequenza
+        // sequence length
         std::string s_LEN_SEQ = argv[1];
         std::stringstream parser1(s_LEN_SEQ);
         parser1 >> LEN_SEQ;
 
-        // len single query
+        // query length
         std::string s_LEN_PATTERN_SEQ = argv[2];
         std::stringstream parser2(s_LEN_PATTERN_SEQ);
         parser2 >> LEN_PATTERN_SEQ;
 
-        // numero totale di query
+        // number of queries
         std::string s_NUM_QUERIES = argv[3];
         std::stringstream parser3(s_NUM_QUERIES);
         parser3 >> NUM_QUERIES;
 
-        // numero di volte in cui faccio media e std (10)
+        // total times in which there will be computed mean ad std
         std::string s_runs = argv[4];
         std::stringstream parser4(s_runs);
         parser4 >> RUNS;
 
-        // numero di volte che voglio cambiare la lunghezza sequenza
+        // times of iteration
         std::string s_iter = argv[5];
         std::stringstream parser5(s_iter);
         parser5 >> iterations;
 
-        // tipologia tecnica
+        // implementation type
         type = argv[6];
 
         std::string s_verbose = argv[7];
@@ -96,7 +95,7 @@ int main(int argc, char *argv[]) {
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
         // FIXME change the var if you change var for test!!!
-        printf("\n LEN SEQ %d \n", LEN_PATTERN_SEQ);
+        printf("\n LEN SEQ %d \n", NUM_QUERIES);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
         // define path uniform distribution to sample data/query values
@@ -122,7 +121,7 @@ int main(int argc, char *argv[]) {
             float total_computational_time_par = 0.0;
             float total_computational_time_par2 = 0.0;
 
-            if (type == "s" or type == "path") {
+            if (type == "s" or type == "all") {
                 /* sequential execution */
                 mode = "sequential";
                 total_computational_time_seq = serialExecution(LEN_PATTERN_SEQ, LEN_RESULT, Historical_Data, Queries,
@@ -138,7 +137,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            if (type == "p" or type == "path") {
+            if (type == "p" or type == "all") {
                 /* parallel execution */
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -154,8 +153,8 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            if (type == "p1" or type == "path") {
-                mode = "parallel_lv_data_lock";
+            if (type == "p1" or type == "all") {
+                mode = "parallel_lv_data_with_lock";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                        Historical_Data, Queries, verbose);
                 t_p1.push_back(total_computational_time_par2);
@@ -182,22 +181,22 @@ int main(int argc, char *argv[]) {
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
-            statistic[it + 2] = LEN_PATTERN_SEQ;
+            statistic[it + 2] = NUM_QUERIES;
         }
         if (type == "p") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
-            statistic[it + 2] = LEN_PATTERN_SEQ;
+            statistic[it + 2] = NUM_QUERIES;
         }
         if (type == "p1") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
-            statistic[it + 2] = LEN_PATTERN_SEQ;
+            statistic[it + 2] = NUM_QUERIES;
         }
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        LEN_PATTERN_SEQ *= 2;
+        NUM_QUERIES *= 2;
     }
 
     save_result(statistic, size, mode, path, testing_var);
