@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
-    std::string testing_var = "LEN_SEQ"; // FIXME change the var if you change var for test!!!
+    std::string testing_var = "LEN_PATTERN_SEQ"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
@@ -95,7 +95,8 @@ int main(int argc, char *argv[]) {
     statistic = (float *) malloc(size * sizeof(float));
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
-        printf("\n LEN SEQ %d \n", LEN_SEQ);
+        // FIXME change the var if you change var for test!!!
+        printf("\n LEN SEQ %d \n", LEN_PATTERN_SEQ);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
         // define path uniform distribution to sample data/query values
@@ -181,22 +182,22 @@ int main(int argc, char *argv[]) {
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = LEN_PATTERN_SEQ;
         }
         if (type == "p") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = LEN_PATTERN_SEQ;
         }
         if (type == "p1") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = LEN_PATTERN_SEQ;
         }
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        LEN_SEQ *= 5;
+        LEN_PATTERN_SEQ *= 2;
     }
 
     save_result(statistic, size, mode, path, testing_var);
