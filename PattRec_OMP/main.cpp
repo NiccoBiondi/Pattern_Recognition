@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "p1" or type == "all") {
-                mode = "parallel_lv_data_with_lock";
+                mode = "parallel_lv_data";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                        Historical_Data, Queries, verbose);
                 t_p1.push_back(total_computational_time_par2);
