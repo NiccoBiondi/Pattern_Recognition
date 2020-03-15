@@ -42,10 +42,11 @@ int main(int argc, char *argv[]) {
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
-    std::string testing_var = "NUM_QUERIES"; // FIXME change the var if you change var for test!!!
+    int nthreads = 12;
+    std::string testing_var = "nthreads"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
-    if (argc == 8) {
+    if (argc == 9) {
         // sequence length
         std::string s_LEN_SEQ = argv[1];
         std::stringstream parser1(s_LEN_SEQ);
@@ -66,17 +67,22 @@ int main(int argc, char *argv[]) {
         std::stringstream parser4(s_runs);
         parser4 >> RUNS;
 
-        // times of iteration
+        // times of iteration on the testing var
         std::string s_iter = argv[5];
         std::stringstream parser5(s_iter);
         parser5 >> iterations;
 
-        // implementation type
-        type = argv[6];
+        // nthreads
+        std::string s_nthr = argv[6];
+        std::stringstream parser6(s_nthr);
+        parser6 >> nthreads;
 
-        std::string s_verbose = argv[7];
-        std::stringstream parser6(s_verbose);
-        parser6 >> verbose;
+        // implementation type
+        type = argv[7];
+
+        std::string s_verbose = argv[8];
+        std::stringstream parser8(s_verbose);
+        parser8 >> verbose;
 
         if (LEN_SEQ < LEN_PATTERN_SEQ) {
             std::cout << "len of historical data less than len pattern seq!! Try again! " << std::endl;
@@ -84,9 +90,9 @@ int main(int argc, char *argv[]) {
         }
 
         std::cout << "You choose the following hyper-parameters: \n" << RUNS << " number of runs for mean and std; "
-                  << type << " as type of execution\n " << NUM_QUERIES << " as number of queries; " << LEN_SEQ
-                  << " as len of historical data; "
-                  << LEN_PATTERN_SEQ << " as len of each query; " << verbose << " as verbose." << std::endl;
+                  << type << " as type of execution\n" << NUM_QUERIES << " as number of queries; " << LEN_SEQ
+                  << " as len of historical data;\n" << LEN_PATTERN_SEQ << " as len of each query; " << nthreads
+                  <<" as number of threads; " << verbose << " as verbose." << std::endl;
     }
 
     float *statistic;
@@ -95,7 +101,7 @@ int main(int argc, char *argv[]) {
 
     for (int it = 0; it < iterations * 3; it = it + 3) {
         // FIXME change the var if you change var for test!!!
-        printf("\n LEN SEQ %d \n", NUM_QUERIES);
+        printf("\n %s %d \n", testing_var.c_str(), nthreads);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
         // define path uniform distribution to sample data/query values
@@ -141,7 +147,7 @@ int main(int argc, char *argv[]) {
                 /* parallel execution */
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
-                                                                      Historical_Data, Queries, verbose);
+                                                                      Historical_Data, Queries, nthreads, verbose);
                 t_p.push_back(total_computational_time_par);
 
                 if (verbose > 0) {
@@ -156,7 +162,7 @@ int main(int argc, char *argv[]) {
             if (type == "p1" or type == "all") {
                 mode = "parallel_lv_data";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
-                                                                       Historical_Data, Queries, verbose);
+                                                                       Historical_Data, Queries, nthreads, verbose);
                 t_p1.push_back(total_computational_time_par2);
 
                 if (verbose > 0) {
@@ -181,22 +187,23 @@ int main(int argc, char *argv[]) {
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
-            statistic[it + 2] = NUM_QUERIES;
+            statistic[it + 2] = nthreads;
         }
         if (type == "p") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
-            statistic[it + 2] = NUM_QUERIES;
+            statistic[it + 2] = nthreads;
         }
         if (type == "p1") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
-            statistic[it + 2] = NUM_QUERIES;
+            statistic[it + 2] = nthreads;
         }
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        NUM_QUERIES *= 2;
+        nthreads += 1;
+        if (nthreads > 12) break;
     }
 
     save_result(statistic, size, mode, path, testing_var);
