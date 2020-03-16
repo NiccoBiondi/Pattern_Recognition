@@ -17,7 +17,7 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
     // compute hyper parameters after initialization
     int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
     // check if the hyper pars are correct
-    int gridX = ceil(LEN_SEQ / THREADS_PER_BLOCK) + 1;
+    int gridX = ceil(LEN_SEQ / THREADS_PER_BLOCK);
     if (gridX < 1) {
         std::cout << "len seq is smaller than the THREADS_PER_BLOCK value!! Try again! " << std::endl;
         exit(1);

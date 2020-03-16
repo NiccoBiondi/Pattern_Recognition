@@ -13,11 +13,13 @@ computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int
      **/
 
     int index = threadIdx.x + blockIdx.x * blockDim.x;
+    float tmp_data = 0;
 
     if (index < LEN_RESULT) {
         for (int i = 0; i < LEN_PATTERN_SEQ; i++) {
+            tmp_data = data[index + i];
             for (int q = 0; q < NUM_QUERIES; q++) {
-                result[index + q * LEN_RESULT] += abs(data[index + i] - queries[i + q * LEN_PATTERN_SEQ]);
+                result[index + q * LEN_RESULT] += abs(tmp_data - queries[i + q * LEN_PATTERN_SEQ]);
             }
         }
     }
