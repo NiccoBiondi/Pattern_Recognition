@@ -131,7 +131,7 @@ computeSAD_tiling(const float *data, const float *queries, float *result, int LE
             auto min = (float) LEN_PATTERN_SEQ; // max value since every entry is <= 1
             int min_index;
             for (int i = 0; i < LEN_RESULT; i++) {
-                if (result[i + q * LEN_RESULT] < min) {
+                if (result[ i + q * LEN_RESULT] < min) {
                     min = result[i + q * LEN_RESULT];
                     min_index = i;
                 }

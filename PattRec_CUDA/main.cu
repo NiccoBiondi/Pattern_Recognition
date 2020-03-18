@@ -16,7 +16,7 @@
 #include "iteration.cuh"
 #include "macros.h"
 
-__constant__ float queries_const[MAX_LEN_Q];
+//__constant__ float queries_const[MAX_LEN_Q];
 namespace fs = std::experimental::filesystem;
 
 int main(int argc, char **argv) {

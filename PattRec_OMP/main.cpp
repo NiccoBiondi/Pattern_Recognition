@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
         std::stringstream parser5(s_iter);
         parser5 >> iterations;
 
-        // nthreads
+        // number of threads
         std::string s_nthr = argv[6];
         std::stringstream parser6(s_nthr);
         parser6 >> nthreads;
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
     int size = iterations * 3;
     statistic = (float *) malloc(size * sizeof(float));
 
-    for (int it = 0; it < iterations * 3; it = it + 3) {
+    for (int it = 0; it < iterations; it++) {
         // FIXME change the var if you change var for test!!!
         printf("\n %s %d \n", testing_var.c_str(), nthreads);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
