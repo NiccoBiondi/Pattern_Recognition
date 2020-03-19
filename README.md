@@ -14,7 +14,7 @@ For more theorical details of our project please refers to the review(**IN PROGR
 ### Run the experiments
 There are some executables in `test/`(**TODO**) that we create to produce our experiments and an example of a bash script useful to run jointly multiple experiments.
 
-Anyway you can generate you own executable both trough the [CMake File](https://github.com/NiccoBiondi/Pattern_Recognition/blob/master/CMakeLists.txt) or as follows: 
+Anyway you can generate you own executable both trough the [CMake File](https://github.com/NiccoBiondi/Pattern_Recognition/blob/master/CMakeLists.txt) and as follows: 
 
 * `$ g++ ...`
 
