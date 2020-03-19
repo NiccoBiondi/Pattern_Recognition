@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     int iterations = 2;
     int RUNS = 2;
     int nthreads = 12;
-    std::string testing_var = "nthreads"; // FIXME change the var if you change var for test!!!
+    std::string testing_var = "LEN_SEQ"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 9) {
@@ -99,9 +99,9 @@ int main(int argc, char *argv[]) {
     int size = iterations * 3;
     statistic = (float *) malloc(size * sizeof(float));
 
-    for (int it = 0; it < iterations; it++) {
+    for (int it = 0; it < iterations*3; it=it+3) {
         // FIXME change the var if you change var for test!!!
-        printf("\n %s %d \n", testing_var.c_str(), nthreads);
+        printf("\n %s %d \n", testing_var.c_str(), LEN_SEQ);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
 
         // define path uniform distribution to sample data/query values
@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "p" or type == "all") {
-                /* parallel execution */
+                /* parallel execution on query*/
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                       Historical_Data, Queries, nthreads, verbose);
@@ -160,7 +160,8 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "p1" or type == "all") {
-                mode = "parallel_lv_data";
+                /* parallel execution on data (lock or privatization)*/
+                mode = "parallel_lv_data_with_lock";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                        Historical_Data, Queries, nthreads, verbose);
                 t_p1.push_back(total_computational_time_par2);
@@ -187,23 +188,23 @@ int main(int argc, char *argv[]) {
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
-            statistic[it + 2] = nthreads;
+            statistic[it + 2] = LEN_SEQ;
         }
         if (type == "p") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
-            statistic[it + 2] = nthreads;
+            statistic[it + 2] = LEN_SEQ;
         }
         if (type == "p1") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
-            statistic[it + 2] = nthreads;
+            statistic[it + 2] = LEN_SEQ;
         }
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        nthreads += 1;
-        if (nthreads > 12) break;
+        LEN_SEQ *= 2;
+        //if (nthreads > 12) break;
     }
 
     save_result(statistic, size, mode, path, testing_var);

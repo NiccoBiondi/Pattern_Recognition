@@ -24,7 +24,8 @@ std::vector<int> generator_pattern(int LEN_PATTERN_SEQ, std::default_random_engi
                                    std::uniform_int_distribution<int> &distribution, int verbose);
 
 inline void
-save_result(const float *v, int size, const std::string &mode, std::string save_path, std::string testing_var) {
+save_result(const float *v, int size, const std::string &mode, const std::string &save_path,
+            const std::string &testing_var) {
     std::string path = save_path + "CPP_" + mode + "_" + testing_var + ".csv";
     std::ofstream csvFile(path);
     for (int r = 0; r < size; r = r + 3) {
