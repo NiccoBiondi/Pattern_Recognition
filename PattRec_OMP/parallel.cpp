@@ -36,7 +36,7 @@ float parallelExecution_levD(int LEN_PATTERN_SEQ, int LEN_RESULT, int NUM_QUERIE
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < NUM_QUERIES; i++) {
-        std::vector<int> query_statistics = queryParallelExecution(LEN_PATTERN_SEQ, LEN_RESULT, nthreads, data,
+        std::vector<int> query_statistics = queryParallelExecution_lock(LEN_PATTERN_SEQ, LEN_RESULT, nthreads, data,
                                                                    Queries[i]);
         if (verbose != 0)
             printf("\nResulting statistic: %d, %d for query %d", query_statistics[0], query_statistics[1], i);

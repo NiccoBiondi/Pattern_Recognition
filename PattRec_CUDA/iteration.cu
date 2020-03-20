@@ -4,7 +4,7 @@
 
 #include "iteration.cuh"
 
-std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, std::string type,
+std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, const std::string& type,
                    std::string mode, int verbose, float *statistic, int it) {
 
     /**
@@ -12,7 +12,7 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
      * std of the some (type) modalities. Those values are stored in statistic for writing in csv file (see main).
      * **/
 
-    std::cout << "\nThe new value of LEN SEQ is " << LEN_SEQ << std::endl;
+    std::cout << "\nThe new value of LEN_PATTERN_SEQ is " << LEN_PATTERN_SEQ << std::endl;
 
     // compute hyper parameters after initialization
     int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
@@ -287,7 +287,7 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
     }
 
     // FIXME change the var if you change var for test!!!
-    statistic[it + 2] = LEN_SEQ;
+    statistic[it + 2] = LEN_PATTERN_SEQ;
 
     // free host and device data
     curandDestroyGenerator(generator);

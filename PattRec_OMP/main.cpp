@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
         std::vector<float> t_p;
         std::vector<float> t_p1;
 
-        for (int run = 0; run < RUNS; run++) {
+        for (int run = 0; run < RUNS; run++) {  
 
             if (run % (RUNS / 2) == 0) std::cout << "STARTING RUN " << run << std::endl;
 
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            if (type == "p" or type == "all") {
+            if (type == "pq" or type == "all") {
                 /* parallel execution on query*/
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            if (type == "p1" or type == "all") {
+            if (type == "pd" or type == "all") {
                 /* parallel execution on data (lock or privatization)*/
                 mode = "parallel_lv_data_with_lock";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            /*if (type != "s" and type != "p" and verbose > 1) {
+            /*if (type != "s" and type != "pq" and verbose > 1) {
                 float speed_up = total_computational_time_seq / total_computational_time_par;
                 printf("\nSpeed Up: %f", speed_up);
 
@@ -190,12 +190,12 @@ int main(int argc, char *argv[]) {
             statistic[it + 1] = compute_std(t_s);
             statistic[it + 2] = LEN_SEQ;
         }
-        if (type == "p") {
+        if (type == "pq") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
             statistic[it + 2] = LEN_SEQ;
         }
-        if (type == "p1") {
+        if (type == "pd") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
             statistic[it + 2] = LEN_SEQ;

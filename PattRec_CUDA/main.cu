@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     std::string path = fs::current_path();
     std::string r_path = "Result/";
     if (path.find("cmake") != std::string::npos){
-        path.replace(path.end() - 17, path.end(), r_path);
+        path.replace(path.end() - 22, path.end(), r_path);
     } else { path += "/" + r_path; }
 
     printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     std::string type = "n";                 // type: n=naive, p=private, t=tiling, c=constant
     std::string mode = "naive";             // mode: naive private tiling or constant
     int RUNS = 2;                           // number of runs to compute computational time mean and std
-    std::string testing_var = "LEN_SEQ";    // FIXME change the var if you change var for test!!!
+    std::string testing_var = "LEN_PATTERN_SEQ";    // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
     for (int it = 0; it < iterations * 3; it = it + 3) {
         // return mode that is the correct string for csv name
         mode = one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
-        LEN_SEQ *= 2;   // FIXME change the var if you change var for test!!!
+        LEN_PATTERN_SEQ *= 2;   // FIXME change the var if you change var for test!!!
     }
 
     // save in csv statistics
