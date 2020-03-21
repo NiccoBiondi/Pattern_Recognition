@@ -43,7 +43,8 @@ int main(int argc, char *argv[]) {
     int iterations = 2;
     int RUNS = 2;
     int nthreads = 12;
-    std::string testing_var = "LEN_SEQ"; // FIXME change the var if you change var for test!!!
+    std::string par_data_type = "private";
+    std::string testing_var = "nthreads"; // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 9) {
@@ -92,14 +93,14 @@ int main(int argc, char *argv[]) {
         std::cout << "You choose the following hyper-parameters: \n" << RUNS << " number of runs for mean and std; "
                   << type << " as type of execution\n" << NUM_QUERIES << " as number of queries; " << LEN_SEQ
                   << " as len of historical data;\n" << LEN_PATTERN_SEQ << " as len of each query; " << nthreads
-                  <<" as number of threads; " << verbose << " as verbose." << std::endl;
+                  << " as number of threads; " << verbose << " as verbose." << std::endl;
     }
 
     float *statistic;
     int size = iterations * 3;
     statistic = (float *) malloc(size * sizeof(float));
 
-    for (int it = 0; it < iterations*3; it=it+3) {
+    for (int it = 0; it < iterations * 3; it = it + 3) {
         // FIXME change the var if you change var for test!!!
         printf("\n %s %d \n", testing_var.c_str(), LEN_SEQ);
         int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
@@ -118,14 +119,17 @@ int main(int argc, char *argv[]) {
         std::vector<float> t_s;
         std::vector<float> t_p;
         std::vector<float> t_p1;
+        std::vector<float> t_p2;
 
-        for (int run = 0; run < RUNS; run++) {  
+
+        for (int run = 0; run < RUNS; run++) {
 
             if (run % (RUNS / 2) == 0) std::cout << "STARTING RUN " << run << std::endl;
 
             float total_computational_time_seq = 0.0;
             float total_computational_time_par = 0.0;
             float total_computational_time_par2 = 0.0;
+            float total_computational_time_par3 = 0.0;
 
             if (type == "s" or type == "all") {
                 /* sequential execution */
@@ -161,9 +165,11 @@ int main(int argc, char *argv[]) {
 
             if (type == "pd" or type == "all") {
                 /* parallel execution on data (lock or privatization)*/
-                mode = "parallel_lv_data_with_lock";
+                mode = "parallel_lv_data";
+                par_data_type = "private";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
-                                                                       Historical_Data, Queries, nthreads, verbose);
+                                                                       Historical_Data, Queries, nthreads, verbose,
+                                                                       par_data_type);
                 t_p1.push_back(total_computational_time_par2);
 
                 if (verbose > 0) {
@@ -171,6 +177,24 @@ int main(int argc, char *argv[]) {
                               << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES
                               << "\n    TOTAL COMPUTATION TIME: "
                               << total_computational_time_par2 << " microsec" << "\n    EXECUTION: " << mode
+                              << std::endl;
+                }
+            }
+
+            if (type == "pdl" or type == "all") {
+                /* parallel execution on data (lock or privatization)*/
+                mode = "parallel_lv_data_with_lock";
+                par_data_type = "lock";
+                total_computational_time_par3 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
+                                                                       Historical_Data, Queries, nthreads, verbose,
+                                                                       par_data_type);
+                t_p2.push_back(total_computational_time_par3);
+
+                if (verbose > 0) {
+                    std::cout << "\n\nFinal table \n    LEN SEQ: " << LEN_SEQ << "\n    LEN PATTERN SEQ: "
+                              << LEN_PATTERN_SEQ << "\n    NUM QUERIES: " << NUM_QUERIES
+                              << "\n    TOTAL COMPUTATION TIME: "
+                              << total_computational_time_par3 << " microsec" << "\n    EXECUTION: " << mode
                               << std::endl;
                 }
             }
@@ -188,23 +212,28 @@ int main(int argc, char *argv[]) {
         if (type == "s") {
             statistic[it] = compute_mean(t_s);
             statistic[it + 1] = compute_std(t_s);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = nthreads;
         }
         if (type == "pq") {
             statistic[it] = compute_mean(t_p);
             statistic[it + 1] = compute_std(t_p);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = nthreads;
         }
         if (type == "pd") {
             statistic[it] = compute_mean(t_p1);
             statistic[it + 1] = compute_std(t_p1);
-            statistic[it + 2] = LEN_SEQ;
+            statistic[it + 2] = nthreads;
+        }
+        if (type == "pdl") {
+            statistic[it] = compute_mean(t_p2);
+            statistic[it + 1] = compute_std(t_p2);
+            statistic[it + 2] = nthreads;
         }
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        LEN_SEQ *= 2;
-        //if (nthreads > 12) break;
+        nthreads *= 2;
+        if (nthreads > 12) break;
     }
 
     save_result(statistic, size, mode, path, testing_var);
