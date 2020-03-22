@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
 
         // FIXME change the var if you change var for test!!!
         // update len seq over iterations
-        nthreads *= 2;
+        nthreads += 1;
         if (nthreads > 12) break;
     }
 
