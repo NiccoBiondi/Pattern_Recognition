@@ -8,7 +8,7 @@ __global__ void
 computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int LEN_PATTERN_SEQ,
                  int NUM_QUERIES, float *minSad, int *minSadId) {
     /**
-     * Compute result array reading both queries and data from global memory ?with less mem access? CHECK ME
+     * Compute result array reading both queries and data from global memory
      * (aka naive implementation)
      **/
 
@@ -66,6 +66,9 @@ computeSAD_priv(float *data, float *queries, float *result, int LEN_RESULT, int 
             result[index + q * LEN_RESULT] = t_SAD;
         }
     }
+
+    // Barrier for threads in a block
+    __syncthreads();
 
     // one thread search for each result vector the min SAD and the ID
     for (int q = 0; q < NUM_QUERIES; q++) {
@@ -125,6 +128,9 @@ computeSAD_tiling(const float *data, const float *queries, float *result, int LE
         __syncthreads();
     }
 
+    // Barrier for threads in a block
+    __syncthreads();
+
     // one thread search for each result vector the min SAD and the ID
     for (int q = 0; q < NUM_QUERIES; q++) {
         if (index == q) {
@@ -170,6 +176,9 @@ computeSAD_constant(const float *data, float *result, int LEN_RESULT,
             }
         }
     }
+
+    // Barrier for threads in a block
+    __syncthreads();
 
     // one thread search for each result vector the min SAD and the ID
     for (int q = 0; q < NUM_QUERIES; q++) {
