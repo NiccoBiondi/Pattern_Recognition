@@ -16,7 +16,7 @@ There are some executables in `test/` that we create to produce our experiments 
 
 Anyway you can generate you own executable either trough the [CMake File](https://github.com/NiccoBiondi/Pattern_Recognition/blob/master/CMakeLists.txt) or as follows: 
 
-* `$ g++ -o test/CPP-executables/CPPnthreads PattRec_OMP/main.cpp PattRec_OMP/parallel.h PattRec_OMP/parallel.cpp PattRec_OMP/sequential.h PattRec_OMP/sequential.cpp PattRec_OMP/utilities.h PattRec_OMP/utilities.cpp -fopenmp -lstdc++fs`
+* `$ g++ PattRec_OMP/main.cpp PattRec_OMP/parallel.cpp PattRec_OMP/sequential.cpp PattRec_OMP/utilities.cpp -fopenmp -lstdc++fs`
 
 This one generate the executable for sequential and CPU parallelism algorithms. It requires the following arguments: 
 

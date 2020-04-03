@@ -198,14 +198,6 @@ int main(int argc, char *argv[]) {
                               << std::endl;
                 }
             }
-
-            /*if (type != "s" and type != "pq" and verbose > 1) {
-                float speed_up = total_computational_time_seq / total_computational_time_par;
-                printf("\nSpeed Up: %f", speed_up);
-
-                float speed_up2 = total_computational_time_seq / total_computational_time_par2;
-                printf("\nSpeed Up: %f\n", speed_up2);
-            }*/
         }
 
         // FIXME change the var if you change var for test!!!
