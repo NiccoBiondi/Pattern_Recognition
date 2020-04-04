@@ -12,7 +12,7 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
      * std of the some (type) modalities. Those values are stored in statistic for writing in csv file (see main).
      * **/
 
-    std::cout << "\nThe new value of NUM_QUERIES is " << NUM_QUERIES << std::endl;
+    std::cout << "\nThe new value of LEN_SEQ is " << LEN_SEQ << std::endl;
 
     // compute hyper parameters after initialization
     int LEN_RESULT = LEN_SEQ - LEN_PATTERN_SEQ + 1;
@@ -287,7 +287,7 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
     }
 
     // FIXME change the var if you change var for test!!!
-    statistic[it + 2] = NUM_QUERIES;
+    statistic[it + 2] = LEN_SEQ;
 
     // free host and device data
     curandDestroyGenerator(generator);

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     int LEN_SEQ = 10;
     int LEN_PATTERN_SEQ = 4;
     int verbose = 0;
-    std::string type = "s";     // s for sequential mode or p for parallel query mode or p1 data level parallel
+    std::string type = "s";     // can be s (sequentail) pq (query) pd (privatization) pdl (lock)
     std::string mode = "sequential";
     int iterations = 2;
     int RUNS = 2;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "pq" or type == "all") {
-                /* parallel execution on query*/
+                /* parallel execution on query */
                 mode = "parallel_lv_query";
                 total_computational_time_par = parallelExecution_levQ(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
                                                                       Historical_Data, Queries, nthreads, verbose);
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "pd" or type == "all") {
-                /* parallel execution on data (lock or privatization)*/
+                /* parallel execution on data (lock or privatization) */
                 mode = "parallel_lv_data";
                 par_data_type = "private";
                 total_computational_time_par2 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (type == "pdl" or type == "all") {
-                /* parallel execution on data (lock or privatization)*/
+                /* parallel execution on data (lock or privatization) */
                 mode = "parallel_lv_data_with_lock";
                 par_data_type = "lock";
                 total_computational_time_par3 = parallelExecution_levD(LEN_PATTERN_SEQ, LEN_RESULT, NUM_QUERIES,
@@ -228,6 +228,7 @@ int main(int argc, char *argv[]) {
         if (nthreads > 12) break;
     }
 
+    // saving the results in csv for future work
     save_result(statistic, size, mode, path, testing_var);
 
     return 0;

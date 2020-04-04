@@ -12,9 +12,7 @@
 #include <thrust/sort.h>
 #include <experimental/filesystem>
 
-#include "execution.cuh"
 #include "iteration.cuh"
-#include "macros.h"
 
 //__constant__ float queries_const[MAX_LEN_Q];
 namespace fs = std::experimental::filesystem;
@@ -24,9 +22,8 @@ int main(int argc, char **argv) {
 #ifdef __CUDACC__
     std::cout << "cuda defined" << std::endl;
 #endif
-
     // take the current path and replace for correct saving path (Result/)
-    // both using terminal or clion run.
+    // both using terminal or IDE run.
     std::string path = fs::current_path();
     std::string r_path = "Result/";
     if (path.find("cmake") != std::string::npos){
@@ -41,10 +38,10 @@ int main(int argc, char **argv) {
     int NUM_QUERIES = 2;
     int verbose = 0;
     int iterations = 2;
-    std::string type = "n";                     // type: n=naive, p=private, t=tiling, c=constant
-    std::string mode = "naive";                 // mode: naive private tiling or constant
-    int RUNS = 2;                               // number of runs to compute computational time mean and std
-    std::string testing_var = "NUM_QUERIES64";    // FIXME change the var if you change var for test!!!
+    std::string type = "n";                       // type: n=naive, p=private, t=tiling, c=constant
+    std::string mode = "naive";                   // mode: naive private tiling or constant
+    int RUNS = 2;                                 // number of runs to compute computational time mean and std
+    std::string testing_var = "LEN_SEQ";    // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {
@@ -93,7 +90,7 @@ int main(int argc, char **argv) {
     for (int it = 0; it < iterations * 3; it = it + 3) {
         // return mode that is the correct string for csv name
         mode = one_iteration(LEN_SEQ, LEN_PATTERN_SEQ, NUM_QUERIES, RUNS, type, mode, verbose, statistic, it);
-        NUM_QUERIES *= 2;   // FIXME change the var if you change var for test!!!
+        LEN_SEQ *= 2;   // FIXME change the var if you change var for test!!!
     }
 
     // save in csv statistics

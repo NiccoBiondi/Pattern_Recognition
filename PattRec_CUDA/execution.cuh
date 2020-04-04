@@ -14,7 +14,7 @@
 #include "macros.h"
 
 extern __constant__ float queries_const[MAX_LEN_Q];
-
+/********** CUDA kernels for Pattern Recognition implementations **********/
 __global__ void
 computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int LEN_PATTERN_SEQ,
                  int NUM_QUERIES, float *minSad, int *minSadId);
