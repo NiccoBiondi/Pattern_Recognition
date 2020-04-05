@@ -4,7 +4,7 @@ This repository is a collaboration with [Giulio Bazzanti](https://github.com/giu
 
 Here we propose our solutions for the Pattern Recognition task. In particular, we study the CPU and GPU parallelism, through OpenMP and CUDA implementations respectively. We compare those performances with a sequential method and we evaluate the resulting Speed Up and Efficiency.
 
-For more theorical details of our project please refers to the review(**IN PROGRESS**) and our presentation(**TODO**) in the `docs/`(**TODO**) subdirectory.
+For more theorical details of our project please refers to the review and our presentation in the [docs](docs) subdirectory.
 
 ## Reproduce experiments
 ### Install  the repository
@@ -12,7 +12,7 @@ For more theorical details of our project please refers to the review(**IN PROGR
 * `$ cd Pattern_Recognition`
 
 ### Run the experiments
-There are some executables in `test/` that we create to produce our experiments and an example of a bash script useful to run jointly multiple experiments.
+There are some executables in [test](test) that we create to produce our experiments and an example of a bash script useful to run jointly multiple experiments.
 
 Anyway you can generate you own executable either trough the [CMake File](https://github.com/NiccoBiondi/Pattern_Recognition/blob/master/CMakeLists.txt) or as follows: 
 
