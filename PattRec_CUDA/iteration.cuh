@@ -13,10 +13,13 @@
 #include <cuda_runtime_api.h>
 #include <curand.h>
 #include <thrust/sort.h>
+#include <cstdlib>
 
 #include "execution.cuh"
 #include "utilities.h"
 #include "macros.h"
+
+std::vector<float *> allocate_queries(int LEN_PATTERN_SEQ, int NUM_QUERIES, std::string type, int verbose);
 
 std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, const std::string& type,
                    std::string mode, int verbose, float *statistic, int it);

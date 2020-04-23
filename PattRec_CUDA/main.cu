@@ -14,7 +14,7 @@
 
 #include "iteration.cuh"
 
-//__constant__ float queries_const[MAX_LEN_Q];
+__constant__ float queries_const[MAX_LEN_Q];
 namespace fs = std::experimental::filesystem;
 
 int main(int argc, char **argv) {
@@ -25,9 +25,10 @@ int main(int argc, char **argv) {
     // take the current path and replace for correct saving path (Result/)
     // both using terminal or IDE run.
     std::string path = fs::current_path();
-    std::string r_path = "Result/";
+    std::string r_path = "test/Result/";
+    printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
     if (path.find("cmake") != std::string::npos){
-        path.replace(path.end() - 22, path.end(), r_path);
+        path.replace(path.end() - 17, path.end(), r_path);
     } else { path += "/" + r_path; }
 
     printf("\nWelcome to Pattern Recognition in %s !!! \n\n", path.c_str());
@@ -41,7 +42,7 @@ int main(int argc, char **argv) {
     std::string type = "n";                       // type: n=naive, p=private, t=tiling, c=constant
     std::string mode = "naive";                   // mode: naive private tiling or constant
     int RUNS = 2;                                 // number of runs to compute computational time mean and std
-    std::string testing_var = "LEN_SEQ";    // FIXME change the var if you change var for test!!!
+    std::string testing_var = "LEN_SEQ";          // FIXME change the var if you change var for test!!!
 
     // set other hyper-parameters with launch arguments
     if (argc == 8) {

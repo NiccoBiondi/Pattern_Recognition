@@ -11,7 +11,6 @@ computeSAD_naive(float *data, float *queries, float *result, int LEN_RESULT, int
      * Compute result array reading both queries and data from global memory
      * (aka naive implementation)
      **/
-
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     float tmp_data = 0;
 

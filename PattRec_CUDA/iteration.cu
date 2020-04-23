@@ -4,6 +4,40 @@
 
 #include "iteration.cuh"
 
+std::vector<float *> allocate_queries(int LEN_PATTERN_SEQ, int NUM_QUERIES, std::string type, int verbose){
+    /**
+     * uniform random generator for queries. It's used for emulate an online match query.
+     * **/
+    float *queries;
+    float *queries_ptr;
+    srand (static_cast <unsigned> (time(0)));
+    queries = (float *) malloc(NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float));
+
+    for (int q=0; q<NUM_QUERIES; q++) {
+        for (int l=0; l<LEN_PATTERN_SEQ; l++) {
+            queries[l + q*LEN_PATTERN_SEQ] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        }
+    }
+
+    if (verbose > 0)    {
+        for (int q = 0; q < NUM_QUERIES * LEN_PATTERN_SEQ; q++) {
+            if (q % LEN_PATTERN_SEQ == 0) std::cout << "query " << q / LEN_PATTERN_SEQ << ": [";
+            std::cout << " " << queries[q] << " ";
+            if (q % LEN_PATTERN_SEQ == (LEN_PATTERN_SEQ - 1)) std::cout << "]" << std::endl;
+        }
+    }
+
+    if (type == "c") {
+        cudaMemcpyToSymbol(queries_const, queries, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float));
+    }
+    else {
+        CUDA_CHECK_RETURN(cudaMalloc((void **) &queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float)))
+        cudaMemcpy(queries_ptr, queries, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float), cudaMemcpyHostToDevice);
+    }
+    std::vector<float *> ptrs = {queries, queries_ptr};
+    return ptrs;
+}
+
 std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int RUNS, const std::string& type,
                    std::string mode, int verbose, float *statistic, int it) {
 
@@ -26,37 +60,27 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
     dim3 dimBlock(THREADS_PER_BLOCK, 1, 1);
 
     // define ptrs to data
-    float *data, *queries;
-    float *data_ptr, *queries_ptr;
+    float *data;
+    float *data_ptr;
 
     // allocate data on host and device
     data = (float *) malloc(LEN_SEQ * sizeof(float));
-    queries = (float *) malloc(NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float));
     CUDA_CHECK_RETURN(cudaMalloc((void **) &data_ptr, LEN_SEQ * sizeof(float)))
-    CUDA_CHECK_RETURN(cudaMalloc((void **) &queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float)))
 
     // generate data and queries on device
     curandGenerator_t generator;
     curandCreateGenerator(&generator, CURAND_RNG_PSEUDO_DEFAULT);
     curandSetPseudoRandomGeneratorSeed(generator, 1234ULL);
     curandGenerateUniform(generator, data_ptr, LEN_SEQ);
-    curandGenerateUniform(generator, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ);
 
     // the generator create data on device, if verbose != 0 you'll copy data on host for visualization
     if (verbose > 1) {
         cudaMemcpy(data, data_ptr, LEN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
-        cudaMemcpy(queries, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
         std::cout << "data : [";
         for (int i = 0; i < LEN_SEQ; i++) {
             std::cout << " " << data[i] << " ";
         }
         std::cout << "]" << std::endl;
-
-        for (int q = 0; q < NUM_QUERIES * LEN_PATTERN_SEQ; q++) {
-            if (q % LEN_PATTERN_SEQ == 0) std::cout << "query " << q / LEN_PATTERN_SEQ << ": [";
-            std::cout << " " << queries[q] << " ";
-            if (q % LEN_PATTERN_SEQ == (LEN_PATTERN_SEQ - 1)) std::cout << "]" << std::endl;
-        }
     }
 
     // store the result
@@ -89,6 +113,9 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             total_computational_time = 0.0;
 
             auto start = std::chrono::high_resolution_clock::now();
+            std::vector<float *> ptrs =  allocate_queries(LEN_PATTERN_SEQ, NUM_QUERIES, type, verbose);
+            float *queries = ptrs[0];
+            float *queries_ptr = ptrs[1];
             computeSAD_naive<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                     NUM_QUERIES, dev_minSad, dev_minSadId);
             auto end = std::chrono::high_resolution_clock::now();
@@ -116,6 +143,8 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             }
 
             t_n.push_back(total_computational_time);
+            free(queries);
+            cudaFree(queries_ptr);
         }
 
         if (type == "a") {
@@ -129,6 +158,9 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             total_computational_time = 0.0;
 
             auto start = std::chrono::high_resolution_clock::now();
+            std::vector<float *> ptrs =  allocate_queries(LEN_PATTERN_SEQ, NUM_QUERIES, type, verbose);
+            float *queries = ptrs[0];
+            float *queries_ptr = ptrs[1];
             computeSAD_priv<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                    NUM_QUERIES, dev_minSad, dev_minSadId);
             auto end = std::chrono::high_resolution_clock::now();
@@ -156,6 +188,8 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             }
 
             t_p.push_back(total_computational_time);
+            free(queries);
+            cudaFree(queries_ptr);
         }
 
         if (type == "a") {
@@ -169,6 +203,9 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             total_computational_time = 0.0;
 
             auto start = std::chrono::high_resolution_clock::now();
+            std::vector<float *> ptrs =  allocate_queries(LEN_PATTERN_SEQ, NUM_QUERIES, type, verbose);
+            float *queries = ptrs[0];
+            float *queries_ptr = ptrs[1];
             computeSAD_tiling<<<dimGrid, dimBlock>>>(data_ptr, queries_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                      NUM_QUERIES, dev_minSad, dev_minSadId);
             auto end = std::chrono::high_resolution_clock::now();
@@ -196,6 +233,8 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             }
 
             t_t.push_back(total_computational_time);
+            free(queries);
+            cudaFree(queries_ptr);
         }
 
         if (type == "a") {
@@ -208,14 +247,10 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             mode = "constant";
             total_computational_time = 0.0;
 
-            // copy back the queries on host from device to use same values
-            cudaMemcpy(queries, queries_ptr, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float), cudaMemcpyDeviceToHost);
-            // free device queries memory
-            cudaFree(queries_ptr);
-            // copy queries data on constant memory of device
-            cudaMemcpyToSymbol(queries_const, queries, NUM_QUERIES * LEN_PATTERN_SEQ * sizeof(float));
-
             auto start = std::chrono::high_resolution_clock::now();
+            std::vector<float *> ptrs =  allocate_queries(LEN_PATTERN_SEQ, NUM_QUERIES, type, verbose);
+            float *queries = ptrs[0];
+            float *queries_ptr = ptrs[1];
             computeSAD_constant<<<dimGrid, dimBlock>>>(data_ptr, result_ptr, LEN_RESULT, LEN_PATTERN_SEQ,
                                                        NUM_QUERIES, dev_minSad, dev_minSadId);
             auto end = std::chrono::high_resolution_clock::now();
@@ -243,6 +278,8 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
             }
 
             t_c.push_back(total_computational_time);
+            free(queries);
+            cudaFree(queries_ptr);
         }
 
         reset_result(result, result_ptr, LEN_RESULT, NUM_QUERIES);
@@ -293,9 +330,6 @@ std::string one_iteration(int LEN_SEQ, int LEN_PATTERN_SEQ, int NUM_QUERIES, int
     curandDestroyGenerator(generator);
     free(data);
     cudaFree(data_ptr);
-
-    free(queries);
-    cudaFree(queries_ptr);
 
     free(minSad);
     free(minSadId);

@@ -36,6 +36,7 @@ float parallelExecution_levD(int LEN_PATTERN_SEQ, int LEN_RESULT, int NUM_QUERIE
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < NUM_QUERIES; i++) {
+        // store min SAD and its ID for each query
         std::vector<int> query_statistics;
 
         if (par_data_type == "private") {

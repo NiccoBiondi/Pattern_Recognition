@@ -7,7 +7,7 @@
 
 #define NUM_Q 10
 #define LEN_QUERY 1000
-#define TILE_WIDTH 64
+#define TILE_WIDTH 128
 #define THREADS_PER_BLOCK TILE_WIDTH
 #define CUDA_CHECK_RETURN(value) { gpuAssert((value), __FILE__, __LINE__); }
 #define MAX_LEN_Q NUM_Q * LEN_QUERY
