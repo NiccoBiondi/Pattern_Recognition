@@ -69,7 +69,7 @@ std::vector<int> queryParallelExecution(int LEN_PATTERN_SEQ, int LEN_RESULT, int
     {
         tid = omp_get_thread_num();
 #pragma omp for
-        for (int i = 0; i < LEN_RESULT; i++) {
+        for (int i = 0; i < LEN_RESULT; i++) { 
             SAD = 0;
             for (int j = 0; j < LEN_PATTERN_SEQ; j++) {
                 SAD += abs(data[i + j] - query[j]);
